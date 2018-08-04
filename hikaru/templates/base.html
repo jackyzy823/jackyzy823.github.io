@@ -8,6 +8,7 @@
     <title>{% block title %}{{ SITENAME }}{%endblock%}</title>
     <!--[if lte IE 8]><script type="text/javascript" src="{{ SITEURL }}/theme/js/html5shiv.js"></script><![endif]-->
     <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="{{ SITEURL }}/theme/css/theme.css" />
     <link rel="stylesheet" media="not print" type="text/css" href="{{ SITEURL }}/theme/css/pygments.css" /> 
     <link rel="shortcut icon" type="image/png" href="{{ SITEURL }}/favicon.png" />
@@ -40,9 +41,13 @@
           {%- include "includes/sidebar.html" -%}
         </aside> <!-- /#page-side -->
       </div>  <!-- /#page-body -->
-
+      <!-- TODO: add scrolltoTop -->
       <footer id="page-foot">
-        <p> {{ FOOTER_TEXT or 'Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>Built with <a href="https://travis-ci.org">Travis-ci</a><br/>Theme based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a><br>Comments made by <a href="https://github.com/eduardoboucas/staticman">Staticman</a>' }}</p>
+        <p> {{ FOOTER_TEXT or 'Built with <a href="https://travis-ci.org">Travis CI</a><br/>
+            Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Comments via <a href="https://github.com/eduardoboucas/staticman">Staticman</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a>
+          ' }}</p>
         {% if GITHUB_URL %}<p><a id="github-link" href="{{ GITHUB_URL}}">Fork me on Github</a></p>{% endif %}
       </footer>
     </div> <!-- /#page -->

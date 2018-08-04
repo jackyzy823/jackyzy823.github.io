@@ -1,6 +1,6 @@
 /* vim: set ts=4 sw=4 et: */
 
-@import url(normalize.css);
+/* @import url(normalize.css); */
 
 @-webkit-keyframes fade {from {opacity: 0;} to { opacity: 1;}}
 @-moz-keyframes    fade {from {opacity: 0;} to { opacity: 1;}}
@@ -209,6 +209,92 @@ ul {
 article h1 a{
     color:firebrick;
 }
+
+code {
+    color:#345678;
+}
+
+/* About comments */
+.comment {
+    padding-bottom: 3.5em;
+    /* margin-bottom: 5px; */
+    /* border: 1px solid firebrick; */
+    min-height: 100px;
+
+}
+.highlight {
+    background-color: aliceblue;
+}
+.comment img{
+    border: unset;
+    margin: unset;
+    padding: 1em;
+}
+
+.comment p{
+    padding: 1em;
+}
+.comment .related ,.comment .replyto {
+    float: right;
+    margin-right: 1em;
+    margin-bottom: 0.3em;
+    color: ivory;
+    background-color: firebrick;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border-radius: .25rem;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: .375rem .75rem;
+}
+.comment .gravatar {
+    float: left;
+
+}
+
+
+#comment-post input[type="text"],#comment-post input[type="email"] , #comment-post textarea{
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    display: block;
+    width: 100%;
+}
+
+#comment-post textarea {
+    resize: vertical;
+
+}
+#comment-post form {
+    max-width: 650px;
+    padding-top: 1em;
+    /* padding: 1em; */
+}
+#comment-post form div{
+    margin: 1em;
+}
+
+#comment-post form p label{
+    padding-bottom: 0.5em;
+    display: block;
+}
+#comment-post input[type="submit"]:hover{
+    background-color: #E63232;
+}
+
+#comment-post input[type="submit"] {
+    background-color: firebrick;
+    color: ivory;
+    border: 0;
+    border-radius: 2px;
+    padding: 1em 2em;
+    line-height: 1;
+    float: right;
+
+}
+/*  */
 
 ::-webkit-scrollbar {
     width: 32px;

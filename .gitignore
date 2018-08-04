@@ -112,3 +112,6 @@ pip-selfcheck.json
 #pelican development
 output/
 *.pid
+
+#
+reference.txt

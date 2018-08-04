@@ -1,0 +1,34 @@
+comments:
+  
+  allowedFields: ["name", "email", "comment", "url" , "replyto"]
+  
+  #allowOrigins: []
+
+  branch: "source"
+  
+  format : "json"
+
+  moderation: true
+
+  #for notification emails
+  #name: 
+  #nofitications:
+  #   enabled: true
+
+  path : "_data/comments/{options.slug}"
+
+  filename : "entry{@id}"
+ 
+  commitMessage: "New comment by {fields.name} via Staticman"
+  
+  requiredFields: ["name", "email", "comment"]
+
+  transforms:
+    email : md5
+
+
+  generatedFields:
+    date:
+      type: date
+      options:
+        format: "timestamp-seconds"
