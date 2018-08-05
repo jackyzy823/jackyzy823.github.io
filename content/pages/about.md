@@ -6,7 +6,9 @@ slug: about
 + Language
 
     + Chinese   (native)
+
     + English   (read & write)
+    
     + Japanese  (read & write a little)
 
 + Music
