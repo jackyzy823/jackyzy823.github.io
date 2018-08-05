@@ -58,7 +58,8 @@ ARTICLE_LANG_SAVE_AS = '{category}/{slug}-{lang}.html'
 THEME = "./hikaru"
 
 #Comment system customize
-STATICMAN_API_ENDPOINT = "https://api.staticman.net/v2/entry/jackyzy823/jackyzy823.github.io/source/"
+STATICMAN_API_ENDPOINT = "https://api.staticman.net/v2/entry/jackyzy823/jackyzy823.github.io/source/comments"
+# comments in the end of ENDPOINT is staticman.yml -> comments: 
 COMMENTS_PATH = "_data/comments"
 
 

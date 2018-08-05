@@ -1,5 +1,5 @@
 comments:
-  
+  #above is the `proerty` at the end of API
   allowedFields: ["name", "email", "comment", "url" , "replyto"]
   
   #allowOrigins: []
