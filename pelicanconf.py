@@ -58,7 +58,7 @@ ARTICLE_LANG_SAVE_AS = '{category}/{slug}-{lang}.html'
 THEME = "./hikaru"
 
 #Comment system customize
-STATICMAN_API_ENDPOINT = "https://api.staticman.net/v2/entry/jackyzy823/jackyzy823/source/"
+STATICMAN_API_ENDPOINT = "https://api.staticman.net/v2/entry/jackyzy823/jackyzy823.github.io/source/"
 COMMENTS_PATH = "_data/comments"
 
 
@@ -80,7 +80,6 @@ COMMENTS = { p : sorted([ readComments(os.path.join(COMMENTS_PATH,p,i))
                             for i in os.listdir(os.path.join(COMMENTS_PATH,p)) if os.path.isfile(os.path.join(COMMENTS_PATH,p,i))  
                         ],key=lambda x:x["date"])    
                         for p in os.listdir(COMMENTS_PATH) if os.path.isdir(os.path.join(COMMENTS_PATH,p)) }
-print "Comments",COMMENTS
 
 def commentdate(value,articleinfo):
     from pelican.utils import strftime,SafeDatetime

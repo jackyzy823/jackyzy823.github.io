@@ -203,7 +203,7 @@ strong{
     color: firebrick;
 }
 
-ul {
+ul , ol {
     padding-left: 20px;
 }
 article h1 a{
@@ -212,6 +212,16 @@ article h1 a{
 
 code {
     color:#345678;
+}
+
+blockquote {
+    border-left: 2px solid firebrick;
+    padding-left: 5px;
+    margin-left: 20px;
+}
+
+table {
+    border-color:unset;
 }
 
 /* About comments */
