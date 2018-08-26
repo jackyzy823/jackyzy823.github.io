@@ -5,19 +5,27 @@
     {{ super() }}
     <meta name="author"   content="{{ article.author or DEFAULT_AUTHOR }}" />
     <meta name="keywords" content="{{ article.tags|join(', ') }}" />
+    {% if article and article.summary %}
+    <meta name="description" content="{{ article.summary|striptags }}"/>
+    {% endif%}
+    {% if article and article.title %}    
+    <meta property="og:title" content="{{ article.title }}" />
+    <meta property="og:url" content="{{ SITEURL }}/{{ article.url }}" />
+    {% endif%}
+    <link rel="canonical" href="{{ SITEURL }}/{{ article.url }}"/>
 {% endblock %}
 
 {% block title %}{{ article.title }} — {{ super() }}{% endblock %}
 
 {%- block content %}
       <header class="post-header">
-        <h1>
+        <h2>
           <a rel="bookmark"
              href="{{ SITEURL }}/{{ article.url }}"
              title="Permanent link to «{{ article.title|striptags }}»">
              {{ article.title }}
           </a>
-        </h1>
+        </h2>
         <div class="meta">
           {% include "includes/article_meta.html" %}
         </div>
@@ -31,6 +39,23 @@
             by <a href="{{ SITEURL }}/{{ article.author.url }}">{{ article.author}}</a><br />
             Tags: {% for tag in article.tags %} #<a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>{% endfor %}
         </div>
+        <br/>
+        <ul>
+          {% if article.prev_article %}
+              <li>Prev:
+                  <a href="{{ SITEURL }}/{{ article.prev_article.url}}">
+                      {{ article.prev_article.title }}
+                  </a>
+              </li>
+          {% endif %}
+          {% if article.next_article %}
+              <li>Next:
+                  <a href="{{ SITEURL }}/{{ article.next_article.url}}">
+                      {{ article.next_article.title }}
+                  </a>
+              </li>
+          {% endif %}
+         </ul>
       </footer>
       {% if COMMENTS[article.slug] %}
       <div>
@@ -61,10 +86,10 @@
       {% endif %}
       <div id="comment-post">
         <h3>Leave a comment</h3>
-        <!-- TODO: dynamic alert -->
+        {# TODO: dynamic alert #}
         <p>Note : Your comment will not be displayed until staticman's PullRequest has been merged.</p>
         <form method="POST" action="{{ STATICMAN_API_ENDPOINT }}">
-            <!-- Never trust users' input!!!  -->
+            {# Never trust users' input!!!  #}
             <input id="redirecturl" name="options[redirect]" type="hidden" value="">
             <script>document.getElementById("redirecturl").value = window.location.href </script>
             <input name="options[slug]" type="hidden" value="{{ article.slug }}">

@@ -206,7 +206,11 @@ strong{
 ul , ol {
     padding-left: 20px;
 }
-article h1 a{
+article header h2{
+    font-size: 1.8em;
+    color:firebrick;
+}
+article header h2 a,article header h2 a:visited{
     color:firebrick;
 }
 
@@ -223,6 +227,8 @@ blockquote {
 table {
     border-color:unset;
 }
+
+
 
 /* About comments */
 .comment {

@@ -57,6 +57,26 @@ ARTICLE_LANG_SAVE_AS = '{category}/{slug}-{lang}.html'
 
 THEME = "./hikaru"
 
+# plugins
+PLUGIN_PATH = [u"plugins"]
+PLUGINS = [u"sitemap",u"neighbors"]
+
+SITEMAP = {
+    "format": "xml",
+    "priorities": {
+        "articles": 0.7,
+        "indexes": 0.5,
+        "pages": 0.3,
+    },
+    "changefreqs": {
+        "articles": "monthly",
+        "indexes": "weekly",
+        "pages": "monthly",
+    }
+}
+
+
+
 #Comment system customize
 STATICMAN_API_ENDPOINT = "https://api.staticman.net/v2/entry/jackyzy823/jackyzy823.github.io/source/comments"
 # comments in the end of ENDPOINT is staticman.yml -> comments: 

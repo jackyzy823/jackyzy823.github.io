@@ -1,15 +1,14 @@
-<!-- includes/article_meta.html -->
-            <br/>Date: <time datetime="{{ article.date.isoformat() }}" title="{{ article.date.isoformat()}}">{{ article.locale_date }}</time>
-            <br/>
-            <!-- <br/>Author: <a href="{{ SITEURL }}/{{ article.author.url }}">{{ article.author }}</a>            
-            <br/>Category: «<a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a>»  -->
-            
-            <!-- {%- if article.tags %}
+{#  includes/article_meta.html  #}
+            Date: <time datetime="{{ article.date.isoformat() }}" title="{{ article.date.isoformat()}}">{{ article.locale_date }}</time>
+            {# <br/>Author: <a href="{{ SITEURL }}/{{ article.author.url }}">{{ article.author }}</a>            
+            <br/>Category: «<a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a>» 
+            #}
+            {# {%- if article.tags %}
               <br />Tags: 
               {%- for tag in article.tags %}
               <a rel="tag" href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>{% if not loop.last %}, {% endif %}
               {% endfor -%}
-            {% endif -%} -->
+            {% endif -%} #}
             {%- if article.translations %}
               <br />Language: 
               [<a href="{{ SITEURL }}/{{ article.url }}">{{ article.lang or DEFAULT_LANG }}</a>]

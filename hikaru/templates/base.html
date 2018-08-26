@@ -35,13 +35,13 @@
         <{%- if article %}article class="post" {% else %}section {% endif -%}id="page-main" role="main">
 {% block content %}
 {% endblock content %}
-      </{%- if article %}article{% else %}section{% endif -%}> <!-- /#page-main -->
+      </{%- if article %}article{% else %}section{% endif -%}> {# /#page-main #}
 
         <aside id="page-side">
           {%- include "includes/sidebar.html" -%}
-        </aside> <!-- /#page-side -->
-      </div>  <!-- /#page-body -->
-      <!-- TODO: add scrolltoTop -->
+        </aside> {# /#page-side #}
+      </div>  {# /#page-body #}
+      {# TODO: add scrolltoTop #}
       <footer id="page-foot">
         <p> {{ FOOTER_TEXT or 'Built with <a href="https://travis-ci.org">Travis CI</a><br/>
             Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
@@ -50,7 +50,7 @@
           ' }}</p>
         {% if GITHUB_URL %}<p><a id="github-link" href="{{ GITHUB_URL}}">Fork me on Github</a></p>{% endif %}
       </footer>
-    </div> <!-- /#page -->
+    </div> {# /#page #}
     {% if GOOGLE_ANALYTICS %}
     <script type="text/javascript">
       var _gaq = _gaq || [];
