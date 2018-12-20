@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>Articles with the keyword « concat » — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — Flux Atom"
+                           href="https://jackyzy823.github.io/" /> 
+
+    <meta name="google-site-verification" content="N3Z5EYtLgbdtKWd31q-vh90f6xenDb9RECXDM5vIZCY" />
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      
+      <div id="page-body">
+        <section id="page-main" role="main">
+      <h1 class="small-title">Articles with the keyword « concat » :</h1>
+     
+        
+      <article class="post">
+        <header class="post-header">
+          <h2>
+            <a rel="bookmark"
+               href="https://jackyzy823.github.io/tech/how-to-concat-aac-from-hls-streaming.html"
+               title="Permanent link to «HLS中的AAC如何合并»">
+               HLS中的AAC如何合并
+            </a>
+          </h2>
+          <div class="meta">
+            Date: <time datetime="2018-07-30T23:09:00+08:00" title="2018-07-30T23:09:00+08:00">2018年07月30日</time>
+          </div>
+        </header>
+        <div class="post-content"> 
+          <p>在研究Radiko的时候,想实现在浏览器插件里把M3U8中所有的AAC保存成一个音频文件。</p>
+<p>如果不限制在浏览器插件中，最简单的方法就是 <code>ffmpeg -c copy</code> 让万能的ffmpeg替你解决一切问题。然而一个插件带一个ffmpeg是不是有点大炮打蚊子？也考虑过替代方案，例如使用基于LLVM的Emscripten将ffmpeg转成Javascript，详见<a href="https://github.com/Kagami/ffmpeg.js/">ffmpeg.js</a>。但也似乎过于沉重。此外经过测试，用ffmpeg合并的结果似乎并不正确。</p>
+<p>第二种方法就是简单的拼接，但是拼接带来一个问题：部分播放器只能识别到第一个片段。</p>
+<p>因此，在阅读了相关文档之后终于找到了正确的解决方法。</p>
+<p>首先，这个aac里面包含了什么？
+根据http-live-streaming的文档中关于<a href="https://tools.ietf.org/html/draft-pantos-http-live-streaming-23#section-3.4">Packed Audio</a>部分的说明:</p>
+<blockquote>
+<p>A Packed Audio Segment contains encoded audio samples and ID3 tags
+   that are simply packed together with minimal framing and no per- …</p></blockquote>
+        </div>
+        <footer class="post-footer">
+          <a class="readmore" href="https://jackyzy823.github.io/tech/how-to-concat-aac-from-hls-streaming.html">Read more...</a>
+        </footer>
+      </article>
+      <nav id="pagination">   <!-- <span id="first_page" class="a inactive">&#60;&#60;</span>
+        <span id="first_page" class="a inactive">&#60;</span> -->
+        <span class="a active">1</span>
+   <!-- <span id="next_page" class="a inactive">&#62;</span>
+        <span id="next_page" class="a inactive">&#62;&#62;</span> -->
+</nav>      </section> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Built with <a href="https://travis-ci.org">Travis CI</a><br/>
+            Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Comments via <a href="https://github.com/eduardoboucas/staticman">Staticman</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a>
+          </p>
+      </footer>
+    </div>   </body>
+</html>

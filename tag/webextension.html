@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>Articles with the keyword « webextension » — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — Flux Atom"
+                           href="https://jackyzy823.github.io/" /> 
+
+    <meta name="google-site-verification" content="N3Z5EYtLgbdtKWd31q-vh90f6xenDb9RECXDM5vIZCY" />
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      
+      <div id="page-body">
+        <section id="page-main" role="main">
+      <h1 class="small-title">Articles with the keyword « webextension » :</h1>
+     
+        
+      <article class="post">
+        <header class="post-header">
+          <h2>
+            <a rel="bookmark"
+               href="https://jackyzy823.github.io/tech/different-behaviors-between-firefox-webextensions-and-chrome-extension.html"
+               title="Permanent link to «WebExtensions踩坑实录»">
+               WebExtensions踩坑实录
+            </a>
+          </h2>
+          <div class="meta">
+            Date: <time datetime="2018-08-05T14:17:00+08:00" title="2018-08-05T14:17:00+08:00">2018年08月05日</time>
+          </div>
+        </header>
+        <div class="post-content"> 
+          <p>最近研究Radiko锁区(详见<a href="https://jackyzy823.github.io/tech/battle-with-radiko.html">文章</a>)，并写浏览器插件绕过限制。自从<code>Firefox Quantum</code>出现后，Firefox变得更加好用了，因此写浏览器插件考虑了同时支持<code>Firefox WebExtensions</code>和<code>Chrome Extension</code>，然而在实际编写插件的过程中还是因为两者有不少差异从而踩了不少坑，总结如下：</p>
+<ol>
+<li>
+<p>API差异与兼容性</p>
+<ol>
+<li>
+<p>Manifest</p>
+<ol>
+<li>
+<p>applications </p>
+<p>这个key是Firefox需要的，而在Chrome上会报错，但不影响加载使用。解决方案是忽略或者通过构建工具生成两份不同的manifest。（注：Switchyomega好像用的是同样一份manifest，但是没有报错，需研究。）</p>
+</li>
+<li>
+<p>permissions -&gt; unlimitStorage</p>
+<p>为了能在chrome.storage中存放大于5MB的内容，必须要声明这项权限。在Firefox的文档中，目前不声明也能存放大于5MB的内容。此外Chrome和Firefox关于这项权限对用户的提示也是不同的，Firefox会显式警告，而Chrome不会。参考<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1411999">Document which permissions trigger user prompts in the different browsers</a>。</p>
+</li>
+<li>
+<p>declarativeContent …</p></li></ol></li></ol></li></ol>
+        </div>
+        <footer class="post-footer">
+          <a class="readmore" href="https://jackyzy823.github.io/tech/different-behaviors-between-firefox-webextensions-and-chrome-extension.html">Read more...</a>
+        </footer>
+      </article>
+      <nav id="pagination">   <!-- <span id="first_page" class="a inactive">&#60;&#60;</span>
+        <span id="first_page" class="a inactive">&#60;</span> -->
+        <span class="a active">1</span>
+   <!-- <span id="next_page" class="a inactive">&#62;</span>
+        <span id="next_page" class="a inactive">&#62;&#62;</span> -->
+</nav>      </section> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Built with <a href="https://travis-ci.org">Travis CI</a><br/>
+            Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Comments via <a href="https://github.com/eduardoboucas/staticman">Staticman</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a>
+          </p>
+      </footer>
+    </div>   </body>
+</html>

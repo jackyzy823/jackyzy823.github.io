@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>Articles with the keyword « geolocation » — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — Flux Atom"
+                           href="https://jackyzy823.github.io/" /> 
+
+    <meta name="google-site-verification" content="N3Z5EYtLgbdtKWd31q-vh90f6xenDb9RECXDM5vIZCY" />
+  </head>
+  <body>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      
+      <div id="page-body">
+        <section id="page-main" role="main">
+      <h1 class="small-title">Articles with the keyword « geolocation » :</h1>
+     
+        
+      <article class="post">
+        <header class="post-header">
+          <h2>
+            <a rel="bookmark"
+               href="https://jackyzy823.github.io/tech/bad-geolocation-restriction-design.html"
+               title="Permanent link to «不好的锁区设计»">
+               不好的锁区设计
+            </a>
+          </h2>
+          <div class="meta">
+            Date: <time datetime="2018-07-30T21:30:00+08:00" title="2018-07-30T21:30:00+08:00">2018年07月30日</time>
+          </div>
+        </header>
+        <div class="post-content"> 
+          <p>众所周之，日本的互联网服务大部分都是锁区的，非日本IP无法访问。但是总是有一些锁区的设计让我们可以绕过这些限制。</p>
+<ol>
+<li>
+<p>超级优秀的设计</p>
+<ul>
+<li>
+<p><a href="https://summo.jp">Summo</a></p>
+<p>针对中国IP直接在TCP层面直接RST，不给你留一点机会。LOL。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>失败的设计</p>
+<p>一般而言,不好的锁区设计一般有两种。</p>
+<ul>
+<li>
+<p>验证前置。</p>
+<p>大多由于锁区判断在前端而不是后端,前端绕过基本没有任何难度。</p>
+<ul>
+<li>
+<p><a href="http://fod.fujitv.co.jp">FOD</a></p>
+</li>
+<li>
+<p>Tv-Asahi</p>
+</li>
+</ul>
+</li>
+<li>
+<p>信任用户的输入</p>
+<p>我说我的IP是日本IP就相信,是不是有点过于天真了呢? <code>X-Forwarded-For</code>确实不应该被信任。</p>
+<ul>
+<li>
+<p>Tver</p>
+<p>视频源用的是第三方服务Brightcove。资源API可被<code>X-Forwarded-For</code>绕过。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>两者皆有</p>
+<p>两种错误都犯的。</p>
+<ul>
+<li>
+<p>Abema.tv
+    虽然有两种前端验证，Abema自己的和第三方服务Akami的，但都能绕过。</p>
+<p>视频源用的是第三方Akami。资源API可被<code>X-Forwarded-For</code>绕过。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>一言难尽的设计</p>
+<ul>
+<li>
+<p><a href="http://radiko.jp/">Radiko</a></p>
+<p>Radiko提供PC端和移动端的服务,在不同平台上,锁区方式实现也不一样。</p>
+<p>在PC端,通过IP来锁区,X-Forwarded-For无效,虽然验证前置,但是鉴权接口依然在后端判断IP锁区。可以是设计得非常合理。</p>
+<p>在Android端 …</p></li></ul></li></ol>
+        </div>
+        <footer class="post-footer">
+          <a class="readmore" href="https://jackyzy823.github.io/tech/bad-geolocation-restriction-design.html">Read more...</a>
+        </footer>
+      </article>
+      <nav id="pagination">   <!-- <span id="first_page" class="a inactive">&#60;&#60;</span>
+        <span id="first_page" class="a inactive">&#60;</span> -->
+        <span class="a active">1</span>
+   <!-- <span id="next_page" class="a inactive">&#62;</span>
+        <span id="next_page" class="a inactive">&#62;&#62;</span> -->
+</nav>      </section> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Built with <a href="https://travis-ci.org">Travis CI</a><br/>
+            Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Comments via <a href="https://github.com/eduardoboucas/staticman">Staticman</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a>
+          </p>
+      </footer>
+    </div>   </body>
+</html>
