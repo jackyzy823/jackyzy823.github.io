@@ -1,0 +1,24 @@
+name: 'Publish Site'
+##
+## When recevive a new push or merge a comment PR (treated as a new push)
+## We do a regeneration and publishment.
+##
+on:
+  # push or pr merge https://github.community/t/trigger-workflow-only-on-pull-request-merge/17359
+  push:
+    branches:
+      - source
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Publish Site
+        run: |
+          make github

@@ -1,16 +1,12 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*- #
-from __future__ import unicode_literals
-
-AUTHOR = u'jackyzy823'
-SITENAME = u"君に会いたい ...Sprinter"
+AUTHOR = 'jackyzy823'
+SITENAME = '君に会いたい ...Sprinter'
 SITEURL = ''
 
 PATH = 'content'
 
 TIMEZONE = 'Asia/Shanghai'
 
-DEFAULT_LANG = u'zh'
+DEFAULT_LANG = 'zh_CN'
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -21,13 +17,6 @@ AUTHOR_FEED_RSS = None
 
 # Blogroll
 LINKS = ()
-        
-DATE_FORMATS = {
-    'en': ('en_US.utf8','%a, %d %b %Y'),
-    'jp': ('ja_JP.utf8','%Y-%m-%d(%a)'),
-    'zh': ('zh_CN.utf8','%Y年%m月%d日')
-}       
-      
 
 # Social widget
 SOCIAL = (('me@github', 'https://github.com/jackyzy823'),
@@ -38,6 +27,13 @@ DEFAULT_PAGINATION = 10
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
+
+## --- following customize -----
+DATE_FORMATS = {
+    'en': ('en_US.utf8','%a, %d %b %Y'),
+    'jp': ('ja_JP.utf8','%Y-%m-%d(%a)'),
+    'zh': ('zh_CN.utf8','%Y年%m月%d日')
+}
 
 STATIC_PATHS = ['extra/favicon.png',"images"]
 EXTRA_PATH_METADATA = {
@@ -57,9 +53,10 @@ ARTICLE_LANG_SAVE_AS = '{category}/{slug}-{lang}.html'
 
 THEME = "./hikaru"
 
+## now plugins are managed by requirements.
 # plugins
-PLUGIN_PATH = [u"plugins"]
-PLUGINS = [u"sitemap",u"neighbors"]
+# PLUGIN_PATH = [u"plugins"]
+# PLUGINS = [u"sitemap",u"neighbors"]
 
 SITEMAP = {
     "format": "xml",

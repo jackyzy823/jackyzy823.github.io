@@ -1,0 +1,6 @@
+pelican[markdown]==4.7.1
+ghp-import==2.0.2
+pelican-neighbors==1.2.0
+pelican-related-posts==1.0.0
+pelican-series==2.1.0
+pelican-sitemap==1.0.2
