@@ -1,7 +1,7 @@
 Title: About
 slug: about
 
-+ Interested in `Reverse engineering` , `Cryptography` and `Infosecurity`.
++ Interested in `Reverse engineering` , `Cryptography` , `Infosecurity` and `Self-Hosting`.
 
 + Language
 
@@ -14,5 +14,7 @@ slug: about
 + Music
 
     + Love **Kalafina** forever, also **moumoon** , **Fujita Maiko**  and **Ishikawa Chiaki**.
+
+    + Love **H-el-ical//**
 
     + Also like **Soutaiseiriron(相対性理論)**　, **Yucat** and **Annabel**. 

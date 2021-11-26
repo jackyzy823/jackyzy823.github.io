@@ -1,6 +1,10 @@
 Title: Projects
 slug: projects
 
++ [fxa-selfhosting](https://github.com/jackyzy823/fxa-selfhosting)
+
+	Self hosting your own FxA stack.
+
 + [Rajiko](https://github.com/jackyzy823/rajiko) 
 
     WebExtension for unblocking Radiko.jp geolocation restriction.
@@ -9,6 +13,4 @@ slug: projects
     
     Modify Radiko Android Apk to bypass root check and geolocation limitation.
 
-+ [Restriction breaker](https://github.com/jackyzy823/restrictionbreaker)
-
-    a series of tools to unblock japan stream video provider's geolocation limitation.
++ Participate in all other self hosting projects !

@@ -42,13 +42,13 @@
         </aside> {# /#page-side #}
       </div>  {# /#page-body #}
       {# TODO: add scrolltoTop #}
+      {# TODO Comments via <a href=""></a><br/> #}
       <footer id="page-foot">
-        <p> {{ FOOTER_TEXT or 'Built with <a href="https://travis-ci.org">Travis CI</a><br/>
+        <p> {{ FOOTER_TEXT or 'Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
             Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
-          Comments via <a href="https://github.com/eduardoboucas/staticman">Staticman</a><br/>
           Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a>
           ' }}</p>
-        {% if GITHUB_URL %}<p><a id="github-link" href="{{ GITHUB_URL}}">Fork me on Github</a></p>{% endif %}
+        {% if GITHUB_URL %}<p><a id="github-link" href="{{ GITHUB_URL }}">Fork me on Github</a></p>{% endif %}
       </footer>
     </div> {# /#page #}
     {% if GOOGLE_ANALYTICS %}
