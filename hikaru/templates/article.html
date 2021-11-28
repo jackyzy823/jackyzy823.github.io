@@ -109,6 +109,7 @@
                 credentials: 'omit',
                 cache: 'no-cache',
                 redirect: 'error',
+                referrerPolicy: 'no-referrer',
                 body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
               }).then(function(resp){
                 if(resp.ok){
@@ -127,7 +128,7 @@
             {# Never trust users' input!!!  #}
             <input id="comment-slug" name="options[slug]" type="hidden" value="{{ article.slug }}">
             <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
-            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
             <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
             <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
             <p><label>Reply To(<a alt="Clean replyto" href="javascript:document.getElementById('comment-replyto').value =null">Clear</a>):</label>
