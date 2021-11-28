@@ -10,7 +10,7 @@ on:
       - source
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,6 +19,6 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Publish Site
+      - name: Generate and publish to Github
         run: |
           make github

@@ -75,7 +75,7 @@ SITEMAP = {
 
 
 #Comment system customize
-STATICMAN_API_ENDPOINT = "https://api.staticman.net/v2/entry/jackyzy823/jackyzy823.github.io/source/comments"
+COMMENT_ENDPOINT = "https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io"
 # comments in the end of ENDPOINT is staticman.yml -> comments: 
 COMMENTS_PATH = "_data/comments"
 
@@ -91,6 +91,8 @@ import six
 
 def readComments(f):
     with open(f,"r") as c:
+        # TODO if comment is markdown format , parse to html
+        # from pelican.readers import MarkdownReader
         return json.load(c)
 
 #TODO: sorted
@@ -118,3 +120,4 @@ def commentdate(value,articleinfo):
 
 JINJA_FILTERS = { 'commentdate' : commentdate }
 #TODO: support comment markdown
+# https://gist.github.com/glombard/7554134#file-reference-markdown-metadata-from-jinja-template-py-L28

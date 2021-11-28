@@ -64,7 +64,7 @@
         {% for comment in COMMENTS[article.slug] %}
             <div id="comment-{{comment._id}}" class="comment">
               <!-- TODO: lazy load image -->
-              <img class="gravatar" src="https://www.gravatar.com/avatar/{{comment.email}}?d=identicon" alt="">
+              <img class="gravatar" src="https://seccdn.libravatar.org/avatar/{{comment.email}}?d=identicon" alt="">
               <p>
                 {% if comment.url %}
                 <strong><a href="//{{comment.url | replace('http://','')|replace('https://','') |e }}">{{ comment.name |e }}</a></strong>
@@ -87,19 +87,53 @@
       <div id="comment-post">
         <h3>Leave a comment</h3>
         {# TODO: dynamic alert #}
-        <p>Note : Your comment will not be displayed until staticman's PullRequest has been merged.</p>
-        <form method="POST" action="{{ STATICMAN_API_ENDPOINT }}">
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="{{ SITEURL }}/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("{{ COMMENT_ENDPOINT }}", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
             {# Never trust users' input!!!  #}
-            <input id="redirecturl" name="options[redirect]" type="hidden" value="">
-            <script>document.getElementById("redirecturl").value = window.location.href </script>
-            <input name="options[slug]" type="hidden" value="{{ article.slug }}">
-            <p><label>Name:</label> <input name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
-            <p><label>E-mail:</label> <input name="fields[email]" type="email" placeholder="(Required)" required="required"></p>
-            <p><label>Website:</label> <input name="fields[url]" type="text" placeholder="(Optional)"></p>
-            <p><label>Comment:</label> <textarea name="fields[comment]" rows=5 required="required"></textarea></p>
-            <p><label>Reply To(<a alt="Clean replyto" href="javascript:document.getElementById('replyto').value =null">Clear</a>):</label>
-              <input id="replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
-            <input type="submit" value="Submit"></button>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="{{ article.slug }}">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" href="javascript:document.getElementById('comment-replyto').value =null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
         </form>
       </div>
 
