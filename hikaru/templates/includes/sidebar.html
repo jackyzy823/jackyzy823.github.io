@@ -34,11 +34,11 @@
           <nav>
             <h3>Links</h3>
             <ul>
-            {% if FEED_ATOM %}
-              <li><a href="{{ FEED_DOMAIN }}/{{ FEED_ATOM }}">Flux ATOM</a></li>
+            {% if FEED_ALL_ATOM %}
+              <li><a href="{{ SITEURL }}/{{ FEED_ALL_ATOM }}">Feed(Atom)</a></li>
             {% endif %}
             {% if FEED_RSS %}
-              <li><a href="{{ FEED_DOMAIN }}/{{ FEED_RSS }}">Flux RSS</a></li>
+              <li><a href="{{ SITEURL }}/{{ FEED_RSS }}">Flux RSS</a></li>
             {% endif %}
             {% if SOCIAL %}
               {% for name, url in SOCIAL %}
