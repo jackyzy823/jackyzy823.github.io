@@ -76,7 +76,7 @@
                 <br/>
                 {{ comment.comment |e }}
               </p>  
-              <button class="replyto" onclick="javascript:document.getElementById('replyto').value = '{{comment._id}}' ;document.getElementById('comment-post').scrollIntoView();">Replyto</button>
+              <button class="replyto" onclick="javascript:document.getElementById('comment-replyto').value = '{{comment._id}}' ;document.getElementById('comment-post').scrollIntoView();">Replyto</button>
               {% if comment.replyto %}
               <button class="related" onclick="javascript:(function(){let a = document.getElementsByClassName('comment');for(let i=0;i<a.length;i++){a[i].classList.remove('highlight');} })()  ; document.getElementById('comment-{{comment.replyto |e}}').classList.add('highlight');document.getElementById('comment-{{comment.replyto |e}}').scrollIntoView();">Related</button>
               {% endif %}

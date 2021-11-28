@@ -24,13 +24,13 @@
   {% endblock headers %}
   </head>
   <body>
+    <a name="top"></a>
     <div id="page">
       <header id="page-head">
         <h1>
           <a href="{{ SITEURL }}/index.html">{{ SITENAME }}</a>
         </h1>
       </header>
-      
       <div id="page-body">
         <{%- if article %}article class="post" {% else %}section {% endif -%}id="page-main" role="main">
 {% block content %}
@@ -41,13 +41,13 @@
           {%- include "includes/sidebar.html" -%}
         </aside> {# /#page-side #}
       </div>  {# /#page-body #}
-      {# TODO: add scrolltoTop #}
-      {# TODO Comments via <a href=""></a><br/> #}
       <footer id="page-foot">
-        <p> {{ FOOTER_TEXT or 'Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
-            Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
-          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a>
+        <p> {{ FOOTER_TEXT or 'Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>\'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
           ' }}</p>
+          <a href="#top">Back To Top</a>
         {% if GITHUB_URL %}<p><a id="github-link" href="{{ GITHUB_URL }}">Fork me on Github</a></p>{% endif %}
       </footer>
     </div> {# /#page #}
