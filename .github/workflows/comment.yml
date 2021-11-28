@@ -1,0 +1,63 @@
+name: 'Receieve Comments'
+
+## example paylod { "event": "comment", "client_payload" : { "data": { "slug": "TEST" , "name": "TEST" , "email": "TEST" ,"comment": TEST }}}
+
+# because we install `https://github.com/apps/public-action-trigger`
+on:
+  # NOTE: your site source-code branch must be default branch
+  repository_dispatch:
+    # A custom event-type
+    types: [comment]
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # do we need echo to  ::set-output?
+      # in order not to be abused. all fields are processed single by single.
+      - name: Validate required fields
+        id: validate
+        run: |
+          echo "::set-output name=_id::$(uuidgen)"
+          echo "::set-output name=date::$(date +%s)"
+          echo "::set-output name=slug::${{ fromJSON(github.event.client_payload.data).slug }}"
+          echo "::set-output name=name::${{ fromJSON(github.event.client_payload.data).name }}"
+          echo "::set-output name=email::${{ fromJSON(github.event.client_payload.data).email }}"
+          echo "::set-output name=comment::${{ fromJSON(github.event.client_payload.data).comment }}"
+          echo "::set-output name=url::${{ fromJSON(github.event.client_payload.data).url }}"
+          echo "::set-output name=replyto::${{ fromJSON(github.event.client_payload.data).replyto }}"
+
+          if [[ -z "${{ steps.validate.outputs.slug }}" || -z  "${{ steps.validate.outputs.name }}" || -z  "${{ steps.validate.outputs.email }}" || -z  "${{ steps.validate.outputs.comment }}" ]];
+          then
+            exit 1;
+          fi
+
+          if [[ ! $(realpath -m _data/comments/${{ steps.validate.outputs.slug }}) =~ ^$(realpath -m _data/comments/).* ]];
+          then
+            exit 1;
+          fi
+      - name: Create comments data file
+        #### !!!! CAUTION slug is path-travsel!!
+        ## if moderation -> true
+        run: |
+          mkdir -p _data/comments/${{ steps.validate.outputs.slug}}
+          echo '$${ toJSON(steps.validate.outputs) }' >  _data/comments/${{ steps.validate.outputs.slug}}/entry${{ steps.validate.outputs._id }}.json
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: "${{ steps.validate.outputs.name}} comments on ${{ steps.validate.outputs.slug}} via apps/public-action-trigger"
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          base: source
+          branch: comments-${{ steps.validate.outputs._id }}
+          delete-branch: true
+          title: "${{ steps.validate.outputs.name }} comments on ${{ steps.validate.outputs.slug }}"
+          body: |
+            ![Logo](https://seccdn.libravatar.org/avatar/{{comment.email}}?d=identicon) ${{ steps.validate.outputs.name }} comments on ${{ steps.validate.outputs.slug }}:
+
+            **${{ steps.validate.outputs.comment }}**
+          draft: false
+        # once Pull Request merged. .github/workflows/publish.yml will be trigged.
+        # as Pull Request merge is  a push
