@@ -16,24 +16,26 @@ jobs:
       - uses: actions/checkout@v2
       # do we need echo to  ::set-output?
       # in order not to be abused. all fields are processed single by single.
-      - name: Validate required fields
-        id: validate
+      - name: Preprocess data
+        id: preprocess
         run: |
           echo "::set-output name=_id::$(uuidgen)"
           echo "::set-output name=date::$(date +%s)"
-          echo "::set-output name=slug::${{ fromJSON(github.event.client_payload.data).slug }}"
-          echo "::set-output name=name::${{ fromJSON(github.event.client_payload.data).name }}"
-          echo "::set-output name=email::${{ fromJSON(github.event.client_payload.data).email }}"
-          echo "::set-output name=comment::${{ fromJSON(github.event.client_payload.data).comment }}"
-          echo "::set-output name=url::${{ fromJSON(github.event.client_payload.data).url }}"
-          echo "::set-output name=replyto::${{ fromJSON(github.event.client_payload.data).replyto }}"
+          echo "::set-output name=slug::${{ github.event.client_payload.data.slug }}"
+          echo "::set-output name=name::${{ github.event.client_payload.data.name }}"
+          echo "::set-output name=email::${{ github.event.client_payload.data.email }}"
+          echo "::set-output name=comment::${{ github.event.client_payload.data.comment }}"
+          echo "::set-output name=url::${{ github.event.client_payload.data.url }}"
+          echo "::set-output name=replyto::${{ github.event.client_payload.data.replyto }}"
 
-          if [[ -z "${{ steps.validate.outputs.slug }}" || -z  "${{ steps.validate.outputs.name }}" || -z  "${{ steps.validate.outputs.email }}" || -z  "${{ steps.validate.outputs.comment }}" ]];
+      - name: Validate required fields
+        run: |
+          if [[ -z "${{ steps.preprocess.outputs.slug }}" || -z  "${{ steps.preprocess.outputs.name }}" || -z  "${{ steps.preprocess.outputs.email }}" || -z  "${{ steps.preprocess.outputs.comment }}" ]];
           then
             exit 1;
           fi
 
-          if [[ ! $(realpath -m _data/comments/${{ steps.validate.outputs.slug }}) =~ ^$(realpath -m _data/comments/).* ]];
+          if [[ ! $(realpath -m _data/comments/${{ steps.preprocess.outputs.slug }}) =~ ^$(realpath -m _data/comments/).* ]];
           then
             exit 1;
           fi
@@ -41,23 +43,23 @@ jobs:
         #### !!!! CAUTION slug is path-travsel!!
         ## if moderation -> true
         run: |
-          mkdir -p _data/comments/${{ steps.validate.outputs.slug}}
-          echo '$${ toJSON(steps.validate.outputs) }' >  _data/comments/${{ steps.validate.outputs.slug}}/entry${{ steps.validate.outputs._id }}.json
+          mkdir -p _data/comments/${{ steps.preprocess.outputs.slug}}
+          echo '$${ toJSON(steps.preprocess.outputs) }' >  _data/comments/${{ steps.preprocess.outputs.slug}}/entry${{ steps.preprocess.outputs._id }}.json
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: "${{ steps.validate.outputs.name}} comments on ${{ steps.validate.outputs.slug}} via apps/public-action-trigger"
+          commit-message: "${{ steps.preprocess.outputs.name}} comments on ${{ steps.preprocess.outputs.slug}} via apps/public-action-trigger"
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           base: source
-          branch: comments-${{ steps.validate.outputs._id }}
+          branch: comments-${{ steps.preprocess.outputs._id }}
           delete-branch: true
-          title: "${{ steps.validate.outputs.name }} comments on ${{ steps.validate.outputs.slug }}"
+          title: "${{ steps.preprocess.outputs.name }} comments on ${{ steps.preprocess.outputs.slug }}"
           body: |
-            ![Logo](https://seccdn.libravatar.org/avatar/{{comment.email}}?d=identicon) ${{ steps.validate.outputs.name }} comments on ${{ steps.validate.outputs.slug }}:
+            ![Logo](https://seccdn.libravatar.org/avatar/{{comment.email}}?d=identicon) ${{ steps.preprocess.outputs.name }} comments on ${{ steps.preprocess.outputs.slug }}:
 
-            **${{ steps.validate.outputs.comment }}**
+            **${{ steps.preprocess.outputs.comment }}**
           draft: false
         # once Pull Request merged. .github/workflows/publish.yml will be trigged.
         # as Pull Request merge is  a push
