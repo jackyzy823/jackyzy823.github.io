@@ -70,6 +70,9 @@ article:last-of-type:after {
     content: '';
 }
 
+.post-content {
+    text-align: justify;
+}
 
 #page-head {
     text-align: center;
