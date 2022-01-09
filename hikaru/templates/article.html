@@ -131,7 +131,7 @@
             <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
             <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
             <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
-            <p><label>Reply To(<a alt="Clean replyto" href="javascript:document.getElementById('comment-replyto').value =null">Clear</a>):</label>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
               <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
             <input type="button" value="Submit" onclick="comment()" ></input>
             <p id="comment-result"></p>
