@@ -65,6 +65,8 @@ Tags: radiko,reversing
 
     暂时还没研究出自动化分析并修改的方法，所以radiko版本更新一次就要改六个so文件还是蛮吐血的事情。(Update: 自动化工具见我的项目[Radiko Android Kai](https://github.com/jackyzy823/radiko_android_kai))
 
+    Update: 经过互联网搜索，推测加固的方法是CrackProof。在某次Radiko升级后，之前的脚本失效了，而且变得更加难跟进调试了，怀疑CrackProof加固的技术也升级了，放弃放弃。
+
 7. 还原后的生成函数
     
     生成鉴权密钥的函数（位于.text段）超级简单：从.data段+0x20+offset处memcpy长度为length的数据作为鉴权密钥。
