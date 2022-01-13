@@ -37,9 +37,16 @@ Category: tech
         两种错误都犯的。
 
         + Abema.tv
-            虽然有两种前端验证，Abema自己的和第三方服务Akami的，但都能绕过。
 
-            视频源用的是第三方Akami。资源API可被`X-Forwarded-For`绕过。
+            虽然有两种前端验证，Abema自己的和第三方服务Akamai的，但都能绕过。
+
+            视频源用的是第三方Akamai。资源API可被`X-Forwarded-For`绕过。
+
+            Update at 2018/11/1, Akamai已不可绕过。
+
+            Update at 2018/10/5，直播源已经无法通过`X-Forwarded-For`绕过，VOD源暂时还可以。通过改变直播源域名变成VOD源域名可以绕过。但目测不会长久。
+
+            Update at 2018/10/5，经过测试替换方式无效，跟推流方式有关，VOD源似乎不是连续的？所以直播还是老老实实挂代理吧。
 
 2. 一言难尽的设计
 

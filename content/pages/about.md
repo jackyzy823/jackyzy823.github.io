@@ -13,7 +13,7 @@ slug: about
 
 + Music
 
-    + Love **Kalafina** forever, also **moumoon** , **Fujita Maiko**  and **Ishikawa Chiaki**.
+    + Love **Kalafina** forever, also **moumoon** , **Milet** ， **Fujita Maiko**  and **Ishikawa Chiaki**.
 
     + Love **H-el-ical//**
 

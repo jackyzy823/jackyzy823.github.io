@@ -13,4 +13,8 @@ slug: projects
     
     Modify Radiko Android Apk to bypass root check and geolocation limitation.
 
++ [FxA selfhosting](https://github.com/jackyzy823/fxa-selfhosting)
+
+    self hosting your own Firefox Accounts services.
+
 + Participate in all other self hosting projects !
