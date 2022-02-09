@@ -1,5 +1,8 @@
 {#  includes/article_meta.html  #}
             Date: <time datetime="{{ article.date.isoformat() }}" title="{{ article.date.isoformat()}}">{{ article.locale_date }}</time>
+            {%- if article.modified %}
+              <br />Updated: <time datetime="{{ article.modified.isoformat() }}" title="{{ article.modified.isoformat()}}">{{ article.locale_modified }}</time>
+            {% endif -%}
             {# <br/>Author: <a href="{{ SITEURL }}/{{ article.author.url }}">{{ article.author }}</a>            
             <br/>Category: «<a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a>» 
             #}
