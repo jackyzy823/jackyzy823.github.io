@@ -1,6 +1,6 @@
 Title: Thinkpad选购碎碎念
 Date: 2021-12-17 06:12
-Modified: 2022-02-08 13:00
+Modified: 2022-04-03 13:00
 Slug: rambling-about-picking-thinkpad
 Tags: rambling,thinkpad
 Category: rambling
@@ -22,3 +22,11 @@ Update 2022-02-08:
 震惊，Fujitsu不同语言/地区的文档竟然还有不同（https://support.ts.fujitsu.com/IndexDownload.asp?lng=com&OpenTab= 和 https://support.ts.fujitsu.com/IndexDownload.asp?lng=en&OpenTab= 就差了几个文档）。根据多出来的[某篇FAQ来](https://support.ts.fujitsu.com/indexdownload.asp?sprache=en&opentab=faqcontent&id=233706899)看，WWAN必须选配，因为要在LCD Back Over里加天线（？）外加刷写BIOS。还提到了[SSD RAID](https://support.ts.fujitsu.com/indexdownload.asp?sprache=en&opentab=faqcontent&id=233739293) ，似乎WWAN的M.2接口可以用来放硬盘？
 
 发现富士通的波兰经销商支持[网页定制](https://configurator.fujitsu-shop.pl/en/notebook/business_professional)。5G模块价格感人，考虑上个4G模块，等后续5G模块价格下来后再换（但不确定BIOS是不是需要改）。
+
+Update 2022-04-03:
+
+波兰经销商又一次立功了！[剧透](https://configurator.fujitsu-shop.pl/en/lifebooks/lifebook_u7412/FPC07589BK/info.html)了U7x12系列可能的发售时间为2022-06-15。根据另外一个[页面](https://configurator.fujitsu-shop.pl/en/info/FPCRG174BK.html)价格也剧透了，比前一代贵一点点。坐等U7412的拆解图，看看SSD的尺寸是不是还是奇葩的2230。之前根据截图推算过2242的长度应该也能用，只不过没法螺丝固定。
+
+经过之前的对比，感觉U7系列应该对标的是Thinkpad的Ts系列，但感觉各方面都要稍微好一点。
+
+另外X1 Extreme Gen5 也即将上市，然而Gen 4的定制依然要4个多月，对Gen 5的定制也不抱希望了。
