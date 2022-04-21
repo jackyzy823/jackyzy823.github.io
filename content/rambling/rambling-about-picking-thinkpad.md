@@ -30,3 +30,7 @@ Update 2022-04-03:
 经过之前的对比，感觉U7系列应该对标的是Thinkpad的Ts系列，但感觉各方面都要稍微好一点。
 
 另外X1 Extreme Gen5 也即将上市，然而Gen 4的定制依然要4个多月，对Gen 5的定制也不抱希望了。
+
+Update 2022-04-21:
+[TCO认证网站](https://tcocertified.com/nl/product-finder/index?brand=FUJITSU&tq=&pp=1)和[EnergyStar网站](https://www.energystar.gov/productfinder/product/certified-computers/results?scrollTo=&search_text=fujitsu&type_filter=&brand_name_isopen=&minimum_processor_speed_filter=&processor_name_isopen=&minimum_system_memory_filter=&markets_filter=United+States&zip_code_filter=&product_types=Select+a+Product+Category&sort_by=brand_name&sort_direction=asc&page_number=1&lastpage=0)上都已经列出了型号，惊喜的是U9312和U9312X也在列。
+
