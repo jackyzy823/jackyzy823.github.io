@@ -1,8 +1,8 @@
-Title: 白嫖Zorin OS Pro/Ultimate
+Title: 白嫖(破解)Zorin OS Pro/Ultimate
 Date: 2022-01-03 14:20
 Modified: 2022-01-15 01:40
 Slug: zorin-os-pro-upgrade
-Tags: zorin,bypass,pro,premium,ultimate
+Tags: zorin,bypass,crack,pro,premium,ultimate,破解
 Category: tech
 
 
