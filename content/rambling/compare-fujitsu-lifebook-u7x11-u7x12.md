@@ -4,7 +4,7 @@ Slug: compare-fujitsu-lifebook-u7x11-u7x12
 Tags: fujitsu,lifebook,U7312,U7412,U7512,U7311,U7411,U7511
 Category: rambling
 
-心心念念等着Fujitsu Lifebook U7x12系列发布，终于等到了。维修手册（可以从[这边](https://support.ts.fujitsu.com/)找到）也发布了，可以对比上一代产品，看看有哪些新的变化。
+[心心念念]({filename}/rambling/rambling-about-picking-thinkpad.md)等着Fujitsu Lifebook U7x12系列发布，终于等到了。维修手册（可以从[这边](https://support.ts.fujitsu.com/)找到）也发布了，可以对比上一代产品，看看有哪些新的变化。
 
 ## 变化
 
