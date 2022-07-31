@@ -83,6 +83,9 @@ sudo iptables -t nat -A OUTPUT -p tcp  -j google
 最近听闻K-9加入ThunderBird，就在想Thunderbird能不能出个Headless的然后扔在VPS上收邮件，然后本地ThunderBird和安卓端通过WEB API来访问/同步。
 或者加入FxA全家桶，利用Firefox Sync来同步设置邮件（可能对对于Mozilla来说负担有些大）。
 
+Update 2022-07-31:
+刚刚看syncstorage-rs的issue是发现了[Thunderbird也要开始使用Firefox Sync](https://github.com/mozilla-services/syncstorage-rs/issues/1363)以及[将Firefox Sync重命名为Mozilla Sync的讨论](https://thunderbird.topicbox.com/groups/planning/T0032198a6351e77d/proposal-firefox-sync-in-114-should-be-called-thunderbird-sync)。搜索了一下关于ThunderBird 114(2023年)相关的[新闻](https://www.ghacks.net/2022/07/25/thunderbirds-next-milestone-release-will-support-firefox-sync/),真是令人期待。从[Roadmap](https://developer.thunderbird.net/planning/roadmap#firefox-sync)来看 1. 起码要等到年底甚至更久。 2. Android端（也就是K9）也会支持，应该说正是因为收购了Android端才开始考虑同步这个功能。 3. 只同步邮箱设置，不同步邮件内容。可以理解，毕竟Sync提供的存储有上限也不大。不如搞成收费的来缓解财政压力，可以学习现在流行的订阅制收费模式嘛。
+
 附： 反混淆用的Python脚本 <del>无内鬼，来点正则表达式笑话。</del>
 ```python
 import re,sys,zlib

@@ -55,6 +55,9 @@ Yet more directly, you can backup and restore via backing up database via mysqld
 I heard the news about that K-9 joined ThunderBird family. I Hope that ThunderBird could make a headless version, so that i can put it in VPS to receive mails and use local ThunderBird/K-9 client to fetch/sync data via WEB API.
 Anther thought is using Firefox Sync to sync all mails and mailbox configurations between clients.
 
+Update at 2022-07-31:
+I found an [issue](https://github.com/mozilla-services/syncstorage-rs/issues/1363) in syncstorage-rs which show that thunderbird will use firefox sync in the near feature and they're [considering rename firefox sync to mozilla sync](https://thunderbird.topicbox.com/groups/planning/T0032198a6351e77d/proposal-firefox-sync-in-114-should-be-called-thunderbird-sync). The [news](https://www.ghacks.net/2022/07/25/thunderbirds-next-milestone-release-will-support-firefox-sync/) show that The sync feature will released with Thunderbird 114 in 2023. From the [Roadmap](https://developer.thunderbird.net/planning/roadmap#firefox-sync), we can know that 1. Android client (a.k.a K9) will also support sync feature.  To be honest, I think that they start considering and working on the sync feature only because they buy the K9 the android email client. 2. Not available until Q4 2022 3. mails are not synced , only email accounts and settings are synced. Well, we all know storage is expensive. Why not go for a subscription plan mode for sync feature to make some money and fire less engineers?
+
 
 PS: Python script for deobfuscating PHP code. <del>WHAT A REGEX JOKE</del>
 ```python
