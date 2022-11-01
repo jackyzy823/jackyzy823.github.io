@@ -13,20 +13,20 @@ jobs:
   create-pr:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # do we need echo to  ::set-output?
       # in order not to be abused. all fields are processed single by single.
       - name: Preprocess data
         id: preprocess
         run: |
-          echo "::set-output name=_id::$(uuidgen)"
-          echo "::set-output name=date::$(date +%s)"
-          echo "::set-output name=slug::${{ github.event.client_payload.data.slug }}"
-          echo "::set-output name=name::${{ github.event.client_payload.data.name }}"
-          echo "::set-output name=email::${{ github.event.client_payload.data.email }}"
-          echo "::set-output name=comment::${{ github.event.client_payload.data.comment }}"
-          echo "::set-output name=url::${{ github.event.client_payload.data.url }}"
-          echo "::set-output name=replyto::${{ github.event.client_payload.data.replyto }}"
+          echo "_id=$(uuidgen)" >> $GITHUB_OUTPUT
+          echo "date=$(date +%s)" >> $GITHUB_OUTPUT
+          echo "slug=${{ github.event.client_payload.data.slug }}" >> $GITHUB_OUTPUT
+          echo "name=${{ github.event.client_payload.data.name }}" >> $GITHUB_OUTPUT
+          echo "email=${{ github.event.client_payload.data.email }}" >> $GITHUB_OUTPUT
+          echo "comment=${{ github.event.client_payload.data.comment }}" >> $GITHUB_OUTPUT
+          echo "url=${{ github.event.client_payload.data.url }}" >> $GITHUB_OUTPUT
+          echo "replyto=${{ github.event.client_payload.data.replyto }}" >> $GITHUB_OUTPUT
 
       - name: Validate required fields
         run: |
@@ -46,7 +46,7 @@ jobs:
           mkdir -p _data/comments/${{ steps.preprocess.outputs.slug}}
           echo '${{ toJSON(steps.preprocess.outputs) }}' >  _data/comments/${{ steps.preprocess.outputs.slug}}/entry${{ steps.preprocess.outputs._id }}.json
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "${{ steps.preprocess.outputs.name}} comments on ${{ steps.preprocess.outputs.slug}} via apps/public-action-trigger"
           committer: GitHub <noreply@github.com>
