@@ -50,9 +50,15 @@ Tags: radiko,reversing
     然而,在Android端密钥被动态链接库保护起来，显然Android端的密钥比PC段长很多。
 
 5. 如何获取Android版鉴权密钥Partialkey的完整部分
-    1. HTTPS抓包，修改Auth1的返回的Header中的offset为0和length足够长，让客户端这边吐出足够长的Key
+    1. HTTPS抓包，修改Auth1的返回的Header中的offset为0和length足够长，让客户端这边吐出足够长的Key (Update：Android 7以上不行,详见android:networkSecurityConfig）
 
-    2. 写一个Apk通过createPackageContext来调用Radiko的native函数getKeyNative2，也是让他吐出足够长的key
+        （Update2: 因为发现安卓上新版本的radiko使用了新的密钥aSmartPhone7o，才有的5中的所有Update)
+
+    2. 写一个Apk通过createPackageContext来调用Radiko的native函数getKeyNative2，也是让他吐出足够长的key 
+        
+        (Update:如果不想写APK可以尝试使用[BeeShell](https://github.com/zhanghai/BeeShell)作为Java的REPL运行环境） 主要伪代码： `Context mmsCtx = context.createPackageContext("jp.radiko.Player",   Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);  Class.forName("jp.radiko.k.k", true, mmsCtx.getClassLoader()); ` 
+    
+        (Update2:旧版本so可行，新版本好像防范了这个方法，使用BeeShell调用会先回到桌面再进入就退出，跟调试的时候现象一样，估计是加了相关的判断逻辑？)
 
     3. 逆向。通过逆向可以发现key长度是固定的。
 
@@ -66,6 +72,8 @@ Tags: radiko,reversing
     暂时还没研究出自动化分析并修改的方法，所以radiko版本更新一次就要改六个so文件还是蛮吐血的事情。(Update: 自动化工具见我的项目[Radiko Android Kai](https://github.com/jackyzy823/radiko_android_kai))
 
     Update: 经过互联网搜索，推测加固的方法是CrackProof。在某次Radiko升级后，之前的脚本失效了，而且变得更加难跟进调试了，怀疑CrackProof加固的技术也升级了，放弃放弃。
+
+    (Update2: 看到一篇文章讲如何逆向CrackProof，结果只有第一步。)
 
 7. 还原后的生成函数
     
