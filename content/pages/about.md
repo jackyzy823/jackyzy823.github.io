@@ -17,4 +17,4 @@ slug: about
 
     + Love **H-el-ical//**
 
-    + Also like **Soutaiseiriron(相対性理論)**　, **Yucat** and **Annabel**. 
+    + Also like **Soutaiseiriron(相対性理論)**　, **Yucat** ， **Annabel** and **Hoang Thuy Linh**. 
