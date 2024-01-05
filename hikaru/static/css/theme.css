@@ -72,6 +72,7 @@ article:last-of-type:after {
 
 .post-content {
     text-align: justify;
+    word-break: break-all;
 }
 
 #page-head {
