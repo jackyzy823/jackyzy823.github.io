@@ -52,6 +52,7 @@ ARTICLE_LANG_SAVE_AS = '{category}/{slug}-{lang}.html'
 
 
 THEME = "./hikaru"
+## pygmentize -S solarized-light -f html -a .highlight >  hikaru/static/css/pygments.css
 
 ## now plugins are managed by requirements.
 # plugins
