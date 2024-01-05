@@ -122,3 +122,10 @@ def commentdate(value,articleinfo):
 JINJA_FILTERS = { 'commentdate' : commentdate }
 #TODO: support comment markdown
 # https://gist.github.com/glombard/7554134#file-reference-markdown-metadata-from-jinja-template-py-L28
+
+from pelican.settings import DEFAULT_CONFIG
+MARKDOWN = DEFAULT_CONFIG['MARKDOWN']
+MARKDOWN['extension_configs'].update({
+    'pymdownx.tilde' : {},
+    'pymdownx.superfences' : {},
+})

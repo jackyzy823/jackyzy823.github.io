@@ -4,3 +4,4 @@ pelican-neighbors==1.2.0
 pelican-related-posts==1.0.0
 pelican-series==2.1.0
 pelican-sitemap==1.0.2
+pymdown-extensions==10.7
