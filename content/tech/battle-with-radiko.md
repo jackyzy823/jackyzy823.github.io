@@ -75,6 +75,8 @@ Tags: radiko,reversing
 
     (Update2: 看到一篇文章讲如何逆向CrackProof，结果只有第一步。)
 
+    (Update3: Radiko v8 使用了Flutter，然后竟然把key打包进去了，路径 /assets/flutter_assets/assets/key/，详见https://github.com/garret1317/yt-dlp-rajiko/blob/f4a74e390da521ef76021b7ba6fdf2874e005311/yt_dlp_plugins/extractor/radiko_key.py ， 以前可是不会犯这个错误的啊，以前是DEBUG版本才会从sdcard路径下读取这个文件)
+
 7. 还原后的生成函数
     
     生成鉴权密钥的函数（位于.text段）超级简单：从.data段+0x20+offset处memcpy长度为length的数据作为鉴权密钥。
