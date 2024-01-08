@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>2023 第一季度 季记 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="- 20221201 - 虽然是2023第一季度的季记，但是从2022年12月就开始启用了。 - 20221202 - 虽然之前说过机械革命Code 01 2022的UEFI里禁止修改Modern Standby/S3，但 …"/>
+    
+    <meta property="og:title" content="2023 第一季度 季记" />
+    <meta property="og:url" content="https://jackyzy823.github.io/monthly/2023-Q1.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/monthly/2023-Q1.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/monthly/2023-Q1.html"
+             title="Permanent link to «2023 第一季度 季记»">
+             2023 第一季度 季记
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2022-12-01T00:00:00+08:00" title="2022-12-01T00:00:00+08:00">Thu 01 December 2022</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <h3>- 20221201 -</h3>
+<p>虽然是2023第一季度的季记，但是从2022年12月就开始启用了。</p>
+<h3>- 20221202 -</h3>
+<p>虽然之前说过机械革命Code 01 2022的UEFI里禁止修改Modern Standby/S3，但通过疯狂查阅资料，还是改成了S3（关键词UEFIVARS)，之后也许可以水一篇教程。现在能够真正的睡眠了（电源按键蓝灯不亮，唤醒时间变长）。可惜卡死/随机重启无法通过修改成S3修复。而且发现S3睡眠后，C6的状态会还原，而之前的Modern Standby的时候，C6的状态不变，可以看出之前的CPU根本就没下电，也因此测出了之前打包的amd-disable-c6的systemd服务没在唤醒后执行的小问题。After=suspend.target 而不是 After=sleep.target 详细见Arch Linux Wiki -&gt; Power Management -&gt; Suspend/Resume service files (resume的部分)</p>
+<h3>- 20221207 -</h3>
+<p>房屋网络布局果然好麻烦，网口插座的位置真是一言难尽，虽然走无线网络也够用，但还是想弄成2.5GbE的有线网络啊。</p>
+<h3>- 20221209 -</h3>
+<p>果然色情才是第一生产力，弄懂了WebPush的一整套流程，特别是浏览器-&gt; Push服务器之间的私有协议，之后（指贤者时间）可以水一篇Blog。</p>
+<h3>- 20221210 -</h3>
+<p>Rclone 和 Google Drive的小技巧：前段时间要下载一个别人分享的一个Google Drive链接，结果因为下的人太多，Google直接限制了网页端的下载，要通过保存副本到自己的网盘里才能下，这时想起了Rclone，通过一番搜索和查阅文档发现可以通过<code>rclone backend copyid &lt;drive_cfg&gt;: &lt;1Z...&gt; &lt;Local_Path&gt;</code>。（注：<code>drive_cfg</code>:已经配置好的Google Drive, <code>1Z....</code> 链接里的一部分。</p>
+<h3>- 20221211 -</h3>
+<p>刚刚看了一下libfprint的更新日志，发现在1.94.5中支持了Code01V2用的指纹模块Goodix 27c6:6014了。可惜Fedora36里没更新，37中也还在testing。在Code01V2发售三个月后，这台机器大概算是能够正常使用了吧。</p>
+<h3>- 20221211 -</h3>
+<p>Linux下没有EdgeMotion（指手指移动到触摸板边缘后，屏幕上的指针继续移动，而不是就停止了，特别用在选择长段文字或者移动文件夹的时候），触摸板就有点难用。不知道是Wayland/X的问题还是要专有的驱动。一番学习原来的xorg-xf86-input-synaptics驱动在2012年之后就删除了相关代码（认为这是个有趣的特性但是未经过测试），然后libinput里似乎也没有实现。（要么提需求并等要么自己写并PR，感觉不难写但是测试比较麻烦？）（Update:写了，提交讨论了，维护者不喜欢，没有下文，这就是<strong>开源</strong>，给你一点小小的<strong>开源震撼</strong>）</p>
+<h3>- 20221214 -</h3>
+<p>还是Code01 2022键盘灯的问题，希望能够常亮，或者鼠标/触摸板移动后亮起。</p>
+<h3>- 20221217 -</h3>
+<p>整理电子垃圾时，发现了一把Noppoo的Lolita机械键盘，这可是当年的入坑键盘啊，如今这厂商都已经不存在了。通电后去发现一切正常，只有三个灯不亮（比IKBC的好到不知道哪里去了），当时废弃的理由是啥来着，依稀记得当时还特地跑到厂家那边上门对线来着？顺便又买了灯珠，嘿嘿嘿，又到了展现我的 <del>搞破坏</del> 焊接实力的时候了。等等，发现灯珠好像没坏？两个不亮的是另外有功能的（更能体现IKBC的垃圾了），还有一个是ScrollLock，似乎Linux下不识别。可恶不能搞破坏了 <del>又浪费钱了</del></p>
+<h3>- 20221218 -</h3>
+<p>在Slashdot上读到一篇讨论：如何提高Firefox市场占有率？ <del>真想回一句做梦</del>  突发奇想 <del>真的不是Narcissism</del> 搜索了自己的selfhosting项目，发现了有中文用户使用我的项目部署了FXA，并且发了嘟文还写了Blog <del>其中也喷了Mozilla</del> ，于是激动之下发邮件交流了一下，顺便也喷了Mozilla一番。</p>
+<h3>- 20221219 -</h3>
+<p>突然想起前段时间Contabo发的涨价邮件，考虑要不要停掉一台VPS。（Update:Contabo在2023年后段又把价格降回去，头一次见到真的遵守承诺降价的，虽然在降价前搞了波促销活动。因为FOMO心理，上车了促销活动但好像被精准地割了次韭菜）</p>
+<h3>- 20221220 -</h3>
+<p>Github Pages 又开始整活，强推自己的github-pages-bot。 <a href="https://github.com/orgs/community/discussions/23096">讨论</a></p>
+<h3>- 20230105 -</h3>
+<p>最近在找IPTV的源，发现了一个repo:youshandefeiyang/IPTV, 其中sxg(蜀小果)及其他的PHP脚本加密了，通过提供的截图发现使用的是tonyenc，找到项目后将<code>tonyenc.c</code>中的<code>PHP_FUNCTION(tonyenc_decode)</code>给取消注释，再在数组<code>tonyenc_functions</code>里加上<code>PHP_FE(tonyenc_decode,   NULL)</code>，就可以导出解码函数，复制一份<code>tonyenc.php</code>为<code>tonydec.php</code>修改其中的encode为decode，很方便就完成了解码脚本。使用后发现不对，于是下载docker镜像，找到<code>tonyenc.so</code>，拖到IDA里发现，哦，原来<code>core.h</code>自定义的加密头在原版的后面多了四字节(0x77,0x88,0x98,0x16)，重新编译tonyenc.so后，能够正常解码。发现大部分脚本来自恩山？</p>
+<h3>- 20230109 -</h3>
+<p>老饭骨的视频中的BGM<a href="https://www.bilibili.com/video/BV1SV4y1T7Lr">小品2</a>听上去确实不错，但是有种大正时期风的黄游的感觉，对说的就是母爛漫。</p>
+<h3>- 20230110 -</h3>
+<p>Code 01又又又卡死了，这次是在VLC放4k视频的时候，一番搜索发现可能是AMD的硬件加速问题，在VLC里把硬件加速解码功能关掉就好了。AMD在我心中已经永久黑名单了。</p>
+<h3>- 20230201 -</h3>
+<p>KDE出BUG，AMD也出BUG，实在是服气。</p>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/monthly.html">monthly</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/monthly/2022-11.html">
+                      2022-11 月记
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/monthly/2023-Q3.html">
+                      2023 第三季度 季记
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="2023-Q1">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li class="active"><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

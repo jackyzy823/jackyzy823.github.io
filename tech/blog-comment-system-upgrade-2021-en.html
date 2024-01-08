@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>An update to my blog comment system — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="blog, comment" />
+    <meta name="description" content="It has been a long time since i dumped something randomly on this blog. When i want to write something agian, i found that Staticman's public service , the comment system i used to use , had been banned by Github due to abuse. Besides, Travis CI , used as the publishment system …"/>
+    
+    <meta property="og:title" content="An update to my blog comment system" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/blog-comment-system-upgrade-2021-en.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/blog-comment-system-upgrade-2021-en.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/blog-comment-system-upgrade-2021-en.html"
+             title="Permanent link to «An update to my blog comment system»">
+             An update to my blog comment system
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2021-11-30T15:30:00+08:00" title="2021-11-30T15:30:00+08:00">Tue, 30 Nov 2021</time>              <br />Language: 
+              [<a href="https://jackyzy823.github.io/tech/blog-comment-system-upgrade-2021-en.html">en</a>]              <a href="https://jackyzy823.github.io/tech/blog-comment-system-upgrade-2021.html">zh_cn</a>
+        </div>
+      </header>
+      <div class="post-content"> 
+        <p>It has been a long time since i dumped something randomly on this blog. When i want to write something agian, i found that Staticman's public service , the comment system i used to use , had been banned by Github due to abuse. Besides, Travis CI , used as the publishment system, no more provides free service. I decided to do something to make the comment system work again.</p>
+<p>OT: I can understand the hard situation for Travis CI. Nobody should be blamed for deciding to stop providing free service. However in this winnner-takes-all industry, i worried about Travis' future.</p>
+<p>You can still use Staticman , instead of with the public instance , with self-hosted instances on <code>Heroku</code> , your own VPS or some else so-called compute platform.But i do not want to register a Heroku account neither purchase a VPS to deploy comment system for a blog nobody cares. I even think of <code>Cloudflare Worker</code> and give up for the just same reason as Heroku. Besides, deploying on <code>Cloudflare Worker</code> requires additonal modifications to Staticman.I also found a comment system hosted on <code>Vercel</code>.</p>
+<p>After a further consideration, I found that the core function of these kind of comment systems is to use Github API to create Pull Requests or directly push commit to blog repository.</p>
+<p>In another word, you can make these API calls direcly in frontend via <code>fetch</code> or <code>XMLHttpRequest</code> or <code>octokit</code> . These API calls require GITHUB_TOKEN (Personal Access Token) to work. However the scope of a GITHUB_TOKEN is far <strong>too</strong> wild to use in frontend safely. Even with the mininal set of permissions (scope:public_repo) for comment system , a token can do anything to your any public repo. Github should implement a better ACL for token which allows users make more interesting stuff.</p>
+<p>Since i couldn't find a perfect way to create a new comment system, i put it aside for another a-long-time. History always repeats itself. I want to write blog again. I began with the easy part , changing publishment system to Github Actions , then it made me  think whether i can use it to build comment system. The Document leads me to two manually triggered events: workflow_dispatch and repository_dispatch which also need GITHUB_TOKEN. </p>
+<p>This time i didn't give up in half way. I made a search with "repository_dispatch anonymous" as keyword. <strong>Bingo</strong>, i found a Github App called <strong><a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a></strong> which can solve all my problems and <strong>Benkaiser</strong> the great guy who made this also hosts a public service with <code>Azure Function</code>. The only thing i need to do is to authorize this app with repo permission and let comments from blog page go through the public service via <code>fetch</code>. Then the public service will trigger my workflow to make a Pull Request with comments content. Also if this public service is gone, hope no, i can also host one by myself just by registering an Azure account and publishing a Github App. Well, i'll never host one. Thank you Benkaiser! </p>
+<p>He also metioned a similar thought to GITHUB_TOKEN scope. We both hoped that Github can work on this. If Github solved the problem, i can finally build a comment system without any third party services except Github.</p>
+<p>The implementation is under <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">.github/workflow</a> and <del>the ugly javascript part</del> <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/hikaru/templates/article.html">frontend part</a>.</p>
+<p>If you are interested, just leave a comment ,wait half minute, and <a href="https://github.com/jackyzy823/jackyzy823.github.io/pulls">visit</a> to see what happened.</p>
+<p>Finally, hope that i will write more blogs.</p>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+              Tags:  #<a href="https://jackyzy823.github.io/tag/blog.html">blog</a> #<a href="https://jackyzy823.github.io/tag/comment.html">comment</a>        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/tech/different-behaviors-between-firefox-webextensions-and-chrome-extension.html">
+                      WebExtensions踩坑实录
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/rambling/rambling-about-picking-thinkpad.html">
+                      Thinkpad选购碎碎念
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="blog-comment-system-upgrade-2021">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>WebExtensions踩坑实录 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="extension, webextension" />
+    <meta name="description" content="最近研究Radiko锁区(详见文章)，并写浏览器插件绕过限制。自从Firefox Quantum出现后，Firefox变得更加好用了，因此写浏览器插件考虑了同时 …"/>
+    
+    <meta property="og:title" content="WebExtensions踩坑实录" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/different-behaviors-between-firefox-webextensions-and-chrome-extension.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/different-behaviors-between-firefox-webextensions-and-chrome-extension.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/different-behaviors-between-firefox-webextensions-and-chrome-extension.html"
+             title="Permanent link to «WebExtensions踩坑实录»">
+             WebExtensions踩坑实录
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2018-08-05T14:17:00+08:00" title="2018-08-05T14:17:00+08:00">Sun 05 August 2018</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>最近研究Radiko锁区(详见<a href="https://jackyzy823.github.io/tech/battle-with-radiko.html">文章</a>)，并写浏览器插件绕过限制。自从<code>Firefox Quantum</code>出现后，Firefox变得更加好用了，因此写浏览器插件考虑了同时支持<code>Firefox WebExtensions</code>和<code>Chrome Extension</code>，然而在实际编写插件的过程中还是因为两者有不少差异从而踩了不少坑，总结如下：</p>
+<ol>
+<li>
+<p>API差异与兼容性</p>
+<ol>
+<li>
+<p>Manifest</p>
+<ol>
+<li>
+<p>applications </p>
+<p>这个key是Firefox需要的，而在Chrome上会报错，但不影响加载使用。解决方案是忽略或者通过构建工具生成两份不同的manifest。（注：Switchyomega好像用的是同样一份manifest，但是没有报错，需研究。）</p>
+</li>
+<li>
+<p>permissions -&gt; unlimitStorage</p>
+<p>为了能在chrome.storage中存放大于5MB的内容，必须要声明这项权限。在Firefox的文档中，目前不声明也能存放大于5MB的内容。此外Chrome和Firefox关于这项权限对用户的提示也是不同的，Firefox会显式警告，而Chrome不会。参考<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1411999">Document which permissions trigger user prompts in the different browsers</a>。</p>
+</li>
+<li>
+<p>declarativeContent</p>
+<p>目前Firefox不支持，不过有替代方案，参考Stackoverflow上的<a href="https://stackoverflow.com/questions/39252384/is-there-a-ff-equivalent-to-chrome-declarativecontent-onpagechanged">问题</a>。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>browser_action</p>
+<ol>
+<li>
+<p>两者弹出窗口的UI不是完全一致的。将browser_style设置为true后排版一致，但是细节上还有许多不同。</p>
+</li>
+<li>
+<p>Firefox调试弹出窗口的UI较麻烦，需要强制所有的弹出窗口不消失，包括系统菜单，忘记取消就导致弹出的窗口关不掉。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>API -&gt; webRequest</p>
+<ol>
+<li>
+<p>host permission</p>
+<p>Firefox中，在*.a.com这个页面下，如果想监听这个页面发起的对<em>.b.com的请求（CSS，Script,Image,以及</em><em>XMLHttpRequest</em>*），需要同时将 *.a.com和*.b.com 加入host permission。而Chrome则不用。
+Firefox这么做的好处在于不怕影响到别的网站,坏处在于如果你想针对某个第三方服务的话,就得把所有用到它的网站都写进host permission,甚至不得不使用 <code>&lt;all-urls&gt;</code>。</p>
+<p>参考:<a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest">WebExtensions-&gt;webRequest</a>。</p>
+<blockquote>
+<p>To intercept resources loaded by a page (such as images, scripts, or stylesheets), the extension must have the host permission for the resource as well as for the main page requesting the resource. For example, if a page at "https://developer.mozilla.org" loads an image from "https://mdn.mozillademos.org", then an extension must have both host permissions if it is to intercept the image request.</p>
+</blockquote>
+</li>
+<li>
+<p>filterResponse</p>
+<p>Firefox支持读取并修改返回的内容。这个功能简直太实用了,然而Chrome不支持。</p>
+<p>Chrome中有变通方法，但是又各种使用上的限制。变通方法： 利用<code>redirectURL</code>将请求通过返回码<code>307 Internal Redirect</code> 重定向到 <code>Location: &lt;Data Protocol&gt;</code>。在实际使用过程中遇到不少问题。</p>
+<ol>
+<li>
+<p>jQuery的ajax请求会把<code>307 Internal Redirect</code>当作错误响应。</p>
+</li>
+<li>
+<p>无法定制返回头信息，会导致XMLHttpRequest的<code>CORS Preflight</code>失效。</p>
+</li>
+<li>
+<p><code>Data Protocol</code>会导致非同源问题，例如<code>iframe</code>加载<code>src</code>，将<code>src</code>用<code>Data protocol</code>代替后，会被浏览器认为非同源，导致拒绝加载。见<a href="https://blog.mozilla.org/security/2017/10/04/treating-data-urls-unique-origins-firefox-57/">Treating data URLs as unique origins for Firefox 57</a>。</p>
+</li>
+</ol>
+<p>Chrome上的实现参考：<a href="https://gist.github.com/Rob--W/9654450">Implementation example of writable response bodies for Chromium extensions (API draft)</a> 和 <a href="https://docs.google.com/document/d/1iE6M-YSmPtMOsec7pR-ILWveQie8JQQXTm15JKEcUT8">webRequest response body reading/editing proposal</a>。</p>
+<p>我猜，出于安全性的考虑Chrome是不会实现这个功能的，能修改返回内容实在是太危险了，不清楚Firefox为什么会实现。</p>
+</li>
+<li>
+<p>RequsetHeaders</p>
+<p>Firefox的赋值是拼接而不是覆盖，例如原来 <code>header1:key1</code>, 执行<code>header1 = key2</code>后结果是<code>header1:key1,key2</code>。Chrome则是覆盖。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>API-&gt; Downloads</p>
+<ol>
+<li>
+<p>如何下载blob内容</p>
+<p>将URL指定成 <code>URL.createObjectURL(new Blob([arraybuffer]))</code>即可。需要注意的是下载完成后最好<code>URL.revokeObjectURL</code>防止内存问题。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>API-&gt; Storage</p>
+<ol>
+<li>
+<p>getBytesInUse</p>
+<p>Firefox未实现，<a href="https://github.com/kiefferbp/webext-getBytesInUse-polyfill">polyfill</a>有严重的性能问题，对内存使用有影响,不建议使用。</p>
+</li>
+<li>
+<p>存储编码</p>
+<p>Storage的存储本来的设计并不是针对二进制数据进行存储,而是将JSON序列化后对字符串进行存储。因此如果用Uint8Array存储的话，数据能够正常存储，但是因JSON序列化的原因占用空间翻倍，而用Uint16Array存储的话会导致数据错误，主要涉及到Chrome中的JSON库对Unicode中Invalid Character（UTF-16 surrogate pairs的高位）的处理（处理成Replacement character）。</p>
+<p>在Stackoverflow中有这么一个<a href="https://stackoverflow.com/a/38242192">回答</a>。</p>
+<blockquote>
+<p>Unicode codepoints U+D800 to U+DFFF must be avoided: they are invalid in Unicode because they are reserved for UTF-16 surrogate pairs. Some JSON encoders/decoders will replace them with U+FFFD. </p>
+</blockquote>
+<p>JSON标准定义:</p>
+<blockquote>
+<p>However, whether a processor of JSON texts interprets such a surrogate pair as a single code point or as an explicit surrogate pair is a semantic decision that is determined by the specific processor</p>
+</blockquote>
+<p>然而在Firefox里没有这个问题。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>XMLHttpRequest In Extension</p>
+<p>在插件中通过XMLHttpRequest跨域请求资源，该资源会被缓存，然后如果浏览器再次请求这个资源就会发生响应头里面独缺Access-Control-Allow-Origin    这种情况，导致该响应被浏览器阻止以防止跨域安全问题。一番搜索后发现 Tim Berners-Lee 伟大的互联网发明人也遇到了这个<a href="https://lists.w3.org/Archives/Public/www-archive/2017Aug/0000.html">问题</a>。 解决方法有两个:</p>
+<ol>
+<li>
+<p>在插件里为每个这种请求的响应补上<code>Access-Control-Allow-Origin</code>响应头</p>
+</li>
+<li>
+<p>补上<code>Vary: Origin</code> 参见<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#CORS_and_caching">CORS and caching</a></p>
+</li>
+</ol>
+<p>理论上最正确的解决方法是对方服务器加上<code>Vary: Origin</code>。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>差异化构建 </p>
+<p>要抹平Chrome与Firefox插件之间的差异确实很困难,差异化构建也许是一种可行的方式,到底是Webpack还是Grunt还是Gulp呢,选择有很多,但没有一种相对标准的方法。有不少可以值得借鉴的项目： <a href="https://github.com/FelisCatus/SwitchyOmega">Switchyomega</a> , <a href="https://github.com/nakayuki805/AbemaTVChromeExtension">AbemaTVChromeExtension</a> 。</p>
+<p>相关讨论：<a href="https://github.com/mdn/webextensions-examples/issues/286">Example of generating a manifest for both Firefox and Chrome</a></p>
+</li>
+</ol>
+<p>以上</p>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+              Tags:  #<a href="https://jackyzy823.github.io/tag/extension.html">extension</a> #<a href="https://jackyzy823.github.io/tag/webextension.html">webextension</a>        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/tech/how-to-concat-aac-from-hls-streaming.html">
+                      HLS中的AAC如何合并
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/tech/blog-comment-system-upgrade-2021.html">
+                      博客评论系统升级
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="different-behaviors-between-firefox-webextensions-and-chrome-extension">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

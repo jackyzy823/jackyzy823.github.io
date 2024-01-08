@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>一次微不足道的渗透测试 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="penetration, test, firewall, privilege" />
+    <meta name="description" content="​​一台机器 通过端口扫描发现 对外开了80 , 8080 , 22端口 22端口只支持公钥登录 8080架设了某CI服务 80架设了某BLOG服务 某CI服 …"/>
+    
+    <meta property="og:title" content="一次微不足道的渗透测试" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/a-tiny-penetration-test.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/a-tiny-penetration-test.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/a-tiny-penetration-test.html"
+             title="Permanent link to «一次微不足道的渗透测试»">
+             一次微不足道的渗透测试
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2017-12-10T17:35:00+08:00" title="2017-12-10T17:35:00+08:00">Sun 10 December 2017</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>​​一台机器 通过端口扫描发现 对外开了80 , 8080 , 22端口</p>
+<ol>
+<li>
+<p>22端口只支持公钥登录</p>
+</li>
+<li>
+<p>8080架设了某CI服务</p>
+</li>
+<li>
+<p>80架设了某BLOG服务</p>
+</li>
+</ol>
+<p>某CI服务需要登录，但是能够注册（手动滑稽），并且注册后的用户有权运行某高性能虚拟机上的动态语言脚本。</p>
+<p>发现某CI服务权限比较低。尝试sudo id，需要输入密码，猜测没有sudo权限或者需要输入密码才能sudo</p>
+<p>翻了翻某CI服务项目的配置，发现了一条有趣的命令 sudo /etc/init.d/XXXX start </p>
+<p>尝试执行该命令不需要密码并且成功执行，看来是在sudoer里设置了只能sudo执行 /etc/init.d/XXXX </p>
+<p>查看该脚本后，发现是一个用jsvc运行某CI服务编译好的项目的jar的服务脚本，jsvc可以指定--user 来降权执行，但是他指定了root，非常漂亮。</p>
+<p>于是想到了替换jar文件为我们的反弹shell来获得一个root权限的shell，然后进行后续操作。</p>
+<p>反编译他的jar或者直接在某CI服务里看代码，参考了jsvc的文档，实现了跟原始jar一致的接口的反弹shell的jar。</p>
+<p>起服务，齐活，成功拿到Shell。查看sudoers验证猜想正确。</p>
+<p>然后就是信息收集</p>
+<ol>
+<li>
+<p>某CI服务的里拿到某代码托管服务的用户名和密码</p>
+</li>
+<li>
+<p>从某BLOG服务连接某数据库服务的以世界上最好的语言的编写的配置文件里拿到了数据库用户密码</p>
+</li>
+<li>
+<p>拿某代码托管服务的用户名 和 某数据库服务密码 猜出从某BLOG服务的用户名密码</p>
+</li>
+<li>
+<p>根据IP知道主机提供商是某著名以二次元形象吸引宅男程序员氪金的主机提供商，然后拿某BLOG服务的用户名密码登录</p>
+</li>
+</ol>
+<p>以上故事提醒我们</p>
+<ol>
+<li>
+<p>这个主机提供商的端口限制白名单功能是非常坑爹的。</p>
+<p>该机器勾选了 22 和 web服务(80,443) 结果没想到自己在8080上的服务暴露出去了。</p>
+<p>所以以后买了机器架好服务，要自己端口扫一下或者通过iptables增加自己的限制，防止被主机提供商坑一把。白名单是好的，但是跟描述不一样的白名单就。。。</p>
+</li>
+<li>
+<p>sudo只能执行一个命令这个设置说明用户有一定安全习惯，没有<code>ALL ALL NOPASSWD</code>，但是运行的程序如果提供了降权功能，也是要用上的。此外要将服务脚本指向的程序的所有者改成<code>root</code>以防止被第三方随便修改。</p>
+</li>
+<li>
+<p>通用密码害死人。</p>
+</li>
+</ol>
+<p>以上故事纯属虚构，如有巧合概不负责</p>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+              Tags:  #<a href="https://jackyzy823.github.io/tag/penetration.html">penetration</a> #<a href="https://jackyzy823.github.io/tag/test.html">test</a> #<a href="https://jackyzy823.github.io/tag/firewall.html">firewall</a> #<a href="https://jackyzy823.github.io/tag/privilege.html">privilege</a>        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/tech/sublime-svn-sftp-license-crack.html">
+                      Sublime SVN/SFTP 破解
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/tech/bad-geolocation-restriction-design.html">
+                      不好的锁区设计
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="a-tiny-penetration-test">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>
