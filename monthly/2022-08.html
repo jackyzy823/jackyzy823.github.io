@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>2022-08 月记 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="@20220801 又回忆起上个月头的小程序的事情，无法想出Certificate Pinning如何在小程序环境下实现。搜索后发现一种解释 android 7+版本针对ssl安 …"/>
+    
+    <meta property="og:title" content="2022-08 月记" />
+    <meta property="og:url" content="https://jackyzy823.github.io/monthly/2022-08.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/monthly/2022-08.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/monthly/2022-08.html"
+             title="Permanent link to «2022-08 月记»">
+             2022-08 月记
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2022-08-01T00:00:00+08:00" title="2022-08-01T00:00:00+08:00">Mon 01 August 2022</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <ul>
+<li>@20220801 又回忆起上个月头的小程序的事情，无法想出Certificate Pinning如何在小程序环境下实现。搜索后发现一种<a href="https://juejin.cn/post/6920993581758939150">解释</a> android 7+版本针对ssl安全性做了加强，简单来说就是不认用户自己安装的证书。 <a href="https://www.freebuf.com/articles/web/259705.html">文章</a> 提到 现在很多小程序都存在数据加密或者验签操作（现在默认单向证书认证，也就是SSL pinning，可通过justTrustMe绕过，这里说的是双向认证）</li>
+</ul>
+<blockquote>
+<p>相关参考: <a href="https://ppfocus.com/0/te94fb75d.html">突破安卓7.0以上版本WX小程序抓包篇</a> 或 <a href="https://mp.weixin.qq.com/s?src=11&amp;timestamp=1659325447&amp;ver=3955&amp;signature=Nck48exYkq*wcBxCzFuo-r5JXHLJF8okYpF71JhSp*U5pzaJN1xAClIOzRhZ0*syjVkvmv1jN9WaTykzAaRrOuewNGARxh*NNovtU6UUrRNtQ5oyjHPMt34ShXggXQaM&amp;new=1">公众号文章</a></p>
+<p>不過找到了問題的根源：在Android7.0及以上的系統中，每個應用可以定義自己的可信CA集，默認情況下，應用只會信任系統預裝的CA證書，而不會信任用戶安裝的CA證書。</p>
+<p>android:networkSecurityConfig</p>
+<p>https://juejin.cn/post/6844904118230712327 </p>
+<p>https://www.secpulse.com/archives/177209.html</p>
+<p>安卓系统 7.0 以下版本，不管微信任意版本，都会信任系统提供的证书</p>
+<p>安卓系统 7.0 以上版本，微信 7.0 * 以下版本，微信会信任系统提供的证书</p>
+<p>安卓系统 7.0 以上版本，微信 7.0 以上版本，微信只信任它自己配置的证书列表</p>
+</blockquote>
+<ul>
+<li>
+<p>@20220808 看到了机械革命Code01 2022版本的信息，感觉还不错，可惜重量比上一代重，还用的是核显，JD首发预定64G版本可以便宜1000元还是值得考虑的，不过就怕做工问题。</p>
+</li>
+<li>
+<p>@20220808 讨厌国产应用一切都要用手机号注册（随之而来的就是讨厌实名制），又没规定一个手机号只能永远跟着一个人，更加讨厌的就是登录的时候未注册就默认帮你注册了。</p>
+</li>
+<li>
+<p>@20220817 TIL: 今天学习到了在Crontab中百分号 <code>%</code> (Percent sign)是特殊符号，如果命令中有用到则需要转义。还是要多读文档啊，man 5 crontab。</p>
+</li>
+<li>
+<p>@20220820 因为不支持支付宝以及以前打CTF比赛赢的奖品——京东E卡全部用完（竟然还有几十块余额过期了TAT），很久没有在JD买东西了，这次为了Code01预售和农行积分重新启用。因为历史（年轻）原因有两个JD账号，其中一个古早的京东账号，曾经出现在过泄露数据里，因此无法登录需要联系客服，因为登录名很喜欢，还是联系了客服，绑定了另外一个手机号，重置了密码。于是现在的情况是 账号1：登录名是jd_xxx的随机字符串，绑定了常用的手机号，常用的邮箱，银行卡，还有历史订单。 账号2：登录名是常用的互联网代号，手机号是宽带送的，没有历史订单。 强迫症看到这里要疯了吧。</p>
+</li>
+<li>
+<p>@20220823 收到了Namesilo的涨价邮件，.club域名又要涨价了，搜索了一下邮件记录，已经涨过不少次了。 前段时间为了农行积分，搜索结果说Namesilo可以微信支付（过时信息），于是准备续费九年，但是等到结算的时候发现没有微信支付选项就放弃了，这次正好赶上农行支付宝支付终于有积分了，于是趁着涨价前果断续费了，也算是一种因缘吧。</p>
+</li>
+<li>
+<p>@20220824 因为想捡起Radiko的逆向工作，发现现在只有arm64-v8a的so，没有x86的so，给用Android-x86调试带来了非常大的麻烦。然而Apkpure上面没有x86 variant。于是只能从Google Play市场下。Google Play 市场不登录没法下载，现在不想用手机号注册Google账号简直痴人做梦，Google实属罪恶滔天。感谢<code>gplaycli</code>和<code>Aurora Store</code>(基于<code>GplayAPI</code>)，特别是<code>Aurora Store</code>提供的邮箱和Auth信息，虽然最后还是没有下载成功。</p>
+</li>
+<li>
+<p>@20220824 (感觉这条可以移到实战Radiko)一种调试Android SO的奇技淫巧，下载<code>GCC plugin for C4droid(arm64-v8a)</code>将<code>assets</code>中的gcc.zip和debugger.zip解压adb push传送到Android的/data/local/tmp目录，chmod +x libexec 和 bin目录下的可执行文件。编译c代码，其中使用dlopen打开你要调试的so，编译选项 <code>aarch64-linux-android-gcc .... -ldl -fpie -pie</code>，然后上传IDA的android_server64运行，在IDA中运行的程序就是你编写的可执行文件。</p>
+</li>
+<li>
+<p>@20220830 写了一个Github Actions的workflow，需要检查docker image的TAG是否已经存在，方法有很多，可以<a href="https://renehernandez.io/snippets/check-image-tag-container-registry/">参考</a>，1.尝试 Pull一下，但过于笨重 2. 利用Docker Registry API，需要token，但是好在公开库的token的生成不需要登陆或者<code>GITHUB_TOKEN</code>。 ghcr公开package的token生成<code>curl https://ghcr.io/token?scope="repository:owner/repo:pull"</code>，来源： https://github.com/orgs/community/discussions/26279#discussioncomment-3251171 ,深入研究发现这个token其实很简单就是 <code>base64('v1/&lt;owner&gt;/&lt;repo&gt;:&lt;microsecond timestamp&gt;')</code> ,用Python来实现就是 <code>import base64;import time;base64.b64encode('v1:{owner}/{repo}:{ts}'.format(owner="&lt;owner&gt;", repo="&lt;repo&gt;", ts = int( (time.time() )* (1000 ** 3)) ) .encode()).decode()</code>  3.使用docker命令行，最方便不过了 <code>docker manifest inspect</code> https://stackoverflow.com/a/52077346</p>
+</li>
+</ul>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/monthly.html">monthly</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/monthly/2022-07.html">
+                      2022-07 月记
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/monthly/2022-09.html">
+                      2022-09 月记
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="2022-08">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li class="active"><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>实战Radiko — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="radiko, reversing" />
+    <meta name="description" content="我为什么要研究呢？ 还不是为了听Kalafina倶楽部。可是发生了这种事情，大家都不想的。 背景知识 PC版实行IP锁区 Android版实行GPS锁 …"/>
+    
+    <meta property="og:title" content="实战Radiko" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/battle-with-radiko.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/battle-with-radiko.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/battle-with-radiko.html"
+             title="Permanent link to «实战Radiko»">
+             实战Radiko
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2018-07-30T23:00:00+08:00" title="2018-07-30T23:00:00+08:00">Mon 30 July 2018</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <ol>
+<li>
+<p>我为什么要研究呢？</p>
+<p>还不是为了听<strong>Kalafina倶楽部</strong>。可是发生了这种事情，大家都不想的。</p>
+</li>
+<li>
+<p>背景知识</p>
+<ol>
+<li>PC版实行IP锁区</li>
+<li>Android版实行GPS锁区</li>
+<li>共同点：都是通过一套鉴权接口来生成用于播放的Token</li>
+<li>不同点：传递的参数不同，Android版在Headers里传递GPS信息，而PC版不传。PC版和Android版的鉴权密钥不同</li>
+</ol>
+</li>
+<li>
+<p>利用点</p>
+<p>Android版接口不验证IP，在PC版上实现Android版的鉴权流程，即传递我们伪造的GPS信息和Android版的鉴权密钥。</p>
+</li>
+<li>
+<p>封堵点</p>
+<p>Android版接口同样实施IP锁区。想到一个办法，但是仍然有被封堵的可能性：Token分享，即利用日本各县IP（日本Rajiko用户/代理）不断生成Token共享使用。</p>
+</li>
+<li>
+<p>鉴权流程</p>
+<p>密钥(<code>Key</code>): 完整的密钥</p>
+<p>部分密钥(<code>PartialKey</code>): 从完整的密钥的<code>offset</code>处开始的<code>length</code>字节</p>
+<p>鉴权分两步</p>
+<ol>
+<li>
+<p>/v2/api/auth1</p>
+<p>请求参数 : <code>platform_info</code> , <code>user_id</code></p>
+<p>响应参数 : <code>token</code> to be valid, <code>offset</code> ,<code>length</code></p>
+</li>
+<li>
+<p>/v2/api/auth2</p>
+<p>请求参数: <code>token</code> ,<code>platform_info</code> ,<code>user_id</code>, <code>PartialKey</code> ,  <code>connection type</code> (in android), <code>gps location</code>(in android)</p>
+<p>响应参数: <code>location</code> (and your <code>token</code> is valid for radio stations in this location) / <code>OUT</code> (ip invalid or gps invalid)</p>
+</li>
+</ol>
+<p>PC端中密钥在<code>apps/js/playerCommon.js</code>里：<code>bcd151073c03b352e1ef2fd66c32209da9ca0afa</code>。</p>
+<p>然而,在Android端密钥被动态链接库保护起来，显然Android端的密钥比PC段长很多。</p>
+</li>
+<li>
+<p>如何获取Android版鉴权密钥Partialkey的完整部分</p>
+<ol>
+<li>
+<p>HTTPS抓包，修改Auth1的返回的Header中的offset为0和length足够长，让客户端这边吐出足够长的Key (Update：Android 7以上不行,详见android:networkSecurityConfig）</p>
+<p>（Update2: 因为发现安卓上新版本的radiko使用了新的密钥aSmartPhone7o，才有的5中的所有Update)</p>
+</li>
+<li>
+<p>写一个Apk通过createPackageContext来调用Radiko的native函数getKeyNative2，也是让他吐出足够长的key </p>
+<p>(Update:如果不想写APK可以尝试使用<a href="https://github.com/zhanghai/BeeShell">BeeShell</a>作为Java的REPL运行环境） 主要伪代码： <code>Context mmsCtx = context.createPackageContext("jp.radiko.Player",   Context.CONTEXT_INCLUDE_CODE | Context.CONTEXT_IGNORE_SECURITY);  Class.forName("jp.radiko.k.k", true, mmsCtx.getClassLoader());</code> </p>
+<p>(Update2:旧版本so可行，新版本好像防范了这个方法，使用BeeShell调用会先回到桌面再进入就退出，跟调试的时候现象一样，估计是加了相关的判断逻辑？)</p>
+</li>
+<li>
+<p>逆向。通过逆向可以发现key长度是固定的。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>逆向的难点</p>
+<ol>
+<li>
+<p>so经过混淆加壳，需要动态调试。</p>
+</li>
+<li>
+<p>脱完第一层壳后内有反调试，反模拟器，反root，验证dex完整性，验证签名正确性等手段。检测出异常之后就退出。这也就是为什么在模拟器/root过的设备中运行不起来的原因。</p>
+</li>
+</ol>
+<p>其实，反调试等手段还是比较好突破的，因为函数入口点只有一个，只要JMP过去就行了。所以我的Patch里都是一个字节的修改。修改完之后可以让它自行修复so，还原生成鉴权密钥的函数和密钥数据。</p>
+<p>暂时还没研究出自动化分析并修改的方法，所以radiko版本更新一次就要改六个so文件还是蛮吐血的事情。(Update: 自动化工具见我的项目<a href="https://github.com/jackyzy823/radiko_android_kai">Radiko Android Kai</a>)</p>
+<p>Update: 经过互联网搜索，推测加固的方法是CrackProof。在某次Radiko升级后，之前的脚本失效了，而且变得更加难跟进调试了，怀疑CrackProof加固的技术也升级了，放弃放弃。</p>
+<p>(Update2: 看到一篇文章讲如何逆向CrackProof，结果只有第一步。)</p>
+<p>(Update3: Radiko v8 使用了Flutter，然后竟然把key打包进去了，路径 /assets/flutter_assets/assets/key/，详见<a href="https://github.com/garret1317">garret</a>的分析　https://427738.xyz/yt-dlp-rajiko/notes/v8key.html 以及 https://427738.xyz/yt-dlp-rajiko/ 以及 https://github.com/garret1317/yt-dlp-rajiko/blob/f4a74e390da521ef76021b7ba6fdf2874e005311/yt_dlp_plugins/extractor/radiko_key.py ， 以前可是不会犯这个错误的啊，以前是DEBUG版本才会从sdcard路径下读取这个文件)</p>
+</li>
+<li>
+<p>还原后的生成函数</p>
+<p>生成鉴权密钥的函数（位于.text段）超级简单：从.data段+0x20+offset处memcpy长度为length的数据作为鉴权密钥。</p>
+</li>
+<li>
+<p>PC版的浏览器插件遇到的坑</p>
+<p>详见另一篇<a href="https://jackyzy823.github.io/tech/different-behaviors-between-firefox-webextensions-and-chrome-extension.html">文章</a>关于WebExtensions里的各种坑</p>
+</li>
+<li>
+<p>Apk修改思路（基于smali）</p>
+<p>此外顺手也把APK给修改了，不从GPS设备获取数据，直接传假数据啦。</p>
+<ol>
+<li>
+<p>修改鉴权流程方法</p>
+<p>因为破坏了Apk包的完整性,原样调用鉴权流程,会导致退出。解决方法如下：</p>
+<ol>
+<li>
+<p>直接替换getPartialkey方法，把第5步中得到的完整的key， 不调用so，也就不怕so检测。</p>
+</li>
+<li>
+<p>createPackageContext 调用安装的Radiko，但是本机root的话还是会崩溃。</p>
+</li>
+<li>
+<p>修改so绕过检测</p>
+</li>
+</ol>
+<p>这里我选了第三种，其实第一种更好，因为可以少修改3个so文件。</p>
+</li>
+<li>
+<p>伪造GPS</p>
+<p>研究发现APK有DEVELOPER_MODE模式，自带传假数据的接口和选择地区的界面，那我们把DEVELOPER_MODE打开就好，启动后可以选择不同地区。</p>
+<p>这也告诉我们调试用逻辑不要发布到正式版的包里。本来要自己写一个选择地区的界面还是蛮麻烦的，还要考虑程序流程、持久化什么的，现在倒好全都白送啦！</p>
+</li>
+<li>
+<p>绕过Premium和Timeshift、及录音</p>
+<p>绕过Timeshift很简单，让它写本地数据库时一直写最大值，把最长期限从1天改成8天。</p>
+<p>一开始以为Timeshift是一天内最多随便听3小时节目，后来发现是一个节目你点击开始听之后的一天内最多可以听3小时，也就是说过了这一天或者听超过三小时，这个节目就再也听不了了。</p>
+<p>绕过Premium在浏览器拓展里实现了Token管理比较好做，Android上要改太多东西就放弃了，反正退出重进重新选就好了。</p>
+<p>浏览器拓展有录音和往期下载，但是在Android上也比较麻烦，因为也是要改太多东西，考虑是不是能配合raziko。</p>
+</li>
+<li>
+<p>其他边边角角的坑</p>
+<p>例如发现Radiko的闪退bug之类的。</p>
+</li>
+</ol>
+</li>
+<li>
+<p>下一步研究计划</p>
+<p>爬完了所有Radiko的ON-AIR曲目，不过并不是所有台都有ON-AIR信息，准备研究J-POP潮流（并不。默默看了下我团的数据，真是十八线中的十八线。</p>
+</li>
+</ol>
+<p>附上逆向动态调试时写的IdaPython的脚本:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">anadebug</span><span class="p">(</span><span class="n">segname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">get_first_seg</span><span class="p">()</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">get_segm_name</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">get_segm_end</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">segname</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">segname</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="nb">hex</span><span class="p">(</span><span class="n">start</span><span class="p">),</span><span class="nb">hex</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+                <span class="n">ida_auto</span><span class="o">.</span><span class="n">plan_and_wait</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">get_segm_attr</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">SEGATTR_PERM</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">ida_segment</span><span class="o">.</span><span class="n">SEGPERM_EXEC</span><span class="p">)</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="nb">hex</span><span class="p">(</span><span class="n">start</span><span class="p">),</span><span class="nb">hex</span><span class="p">(</span><span class="n">end</span><span class="p">)</span>
+            <span class="n">ida_auto</span><span class="o">.</span><span class="n">plan_and_wait</span><span class="p">(</span><span class="n">start</span><span class="p">,</span><span class="n">end</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">get_next_seg</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="n">BADADDR</span><span class="p">:</span>
+            <span class="k">break</span>
+
+<span class="n">run_to</span><span class="p">(</span><span class="n">get_segm_start</span><span class="p">(</span><span class="n">idautils</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EIP</span><span class="p">)</span><span class="o">+</span><span class="mh">0x406</span><span class="p">)</span>
+<span class="n">wait_for_next_event</span><span class="p">(</span><span class="n">WFNE_SUSP</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">anadebug</span><span class="p">()</span>
+<span class="n">firstseg</span>  <span class="o">=</span> <span class="n">get_segm_start</span><span class="p">(</span><span class="n">idautils</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span><span class="p">)</span>
+<span class="n">run_to</span><span class="p">(</span><span class="n">firstseg</span><span class="o">+</span><span class="mh">0x37c0</span><span class="p">)</span>
+<span class="n">wait_for_next_event</span><span class="p">(</span><span class="n">WFNE_SUSP</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">run_to</span><span class="p">(</span><span class="n">firstseg</span><span class="o">+</span><span class="mh">0x5fe</span><span class="p">)</span> <span class="c1">#call eax</span>
+<span class="n">wait_for_next_event</span><span class="p">(</span><span class="n">WFNE_SUSP</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">anadebug</span><span class="p">()</span>
+<span class="n">secondseg</span> <span class="o">=</span> <span class="n">get_segm_start</span><span class="p">(</span><span class="n">idautils</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span><span class="p">)</span>
+<span class="n">run_to</span><span class="p">(</span><span class="n">secondseg</span> <span class="o">+</span> <span class="mh">0x241f</span><span class="p">)</span> 
+<span class="n">wait_for_next_event</span><span class="p">(</span><span class="n">WFNE_SUSP</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">add_bpt</span><span class="p">(</span><span class="n">secondseg</span><span class="o">+</span><span class="mh">0x2144</span><span class="p">)</span>
+<span class="n">run_to</span><span class="p">(</span><span class="n">secondseg</span><span class="o">+</span><span class="mh">0x2144</span><span class="p">)</span>
+<span class="n">wait_for_next_event</span><span class="p">(</span><span class="n">WFNE_SUSP</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1">#decrypt seg</span>
+<span class="k">while</span> <span class="nb">ord</span><span class="p">(</span><span class="n">get_bytes</span><span class="p">(</span><span class="n">idautils</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EBP</span><span class="o">-</span><span class="mh">0x10</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span><span class="o">!=</span><span class="mh">0xf</span><span class="p">:</span>
+    <span class="n">run_to</span><span class="p">(</span><span class="n">secondseg</span><span class="o">+</span><span class="mh">0x2144</span><span class="p">)</span>
+    <span class="n">wait_for_next_event</span><span class="p">(</span><span class="n">WFNE_SUSP</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">del_bpt</span><span class="p">(</span><span class="n">secondseg</span><span class="o">+</span><span class="mh">0x2144</span><span class="p">)</span>
+<span class="n">anadebug</span><span class="p">()</span>
+<span class="n">thirdseg</span> <span class="o">=</span> <span class="n">get_segm_start</span><span class="p">(</span><span class="n">idautils</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EAX</span><span class="p">)</span>
+<span class="n">run_to</span><span class="p">(</span><span class="n">thirdseg</span><span class="o">+</span><span class="mh">0x41a</span><span class="p">)</span> 
+<span class="n">wait_for_next_event</span><span class="p">(</span><span class="n">WFNE_SUSP</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">idautils</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EIP</span> <span class="o">=</span> <span class="n">get_item_end</span><span class="p">(</span><span class="n">idautils</span><span class="o">.</span><span class="n">cpu</span><span class="o">.</span><span class="n">EIP</span><span class="p">)</span> <span class="c1">#jump this call edx</span>
+<span class="c1"># second+ 0x25f -&gt; 4th seg</span>
+</code></pre></div>
+<p>以上</p>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+              Tags:  #<a href="https://jackyzy823.github.io/tag/radiko.html">radiko</a> #<a href="https://jackyzy823.github.io/tag/reversing.html">reversing</a>        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/tech/bad-geolocation-restriction-design.html">
+                      不好的锁区设计
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/tech/how-to-concat-aac-from-hls-streaming.html">
+                      HLS中的AAC如何合并
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="battle-with-radiko">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

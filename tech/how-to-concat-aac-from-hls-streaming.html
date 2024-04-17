@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>HLS中的AAC如何合并 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="aac, hls, m3u8, concat, http live streaming" />
+    <meta name="description" content="在研究Radiko的时候,想实现在浏览器插件里把M3U8中所有的AAC保存成一个音频文件。 如果不限制在浏览器插件中，最简单的方 …"/>
+    
+    <meta property="og:title" content="HLS中的AAC如何合并" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/how-to-concat-aac-from-hls-streaming.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/how-to-concat-aac-from-hls-streaming.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/how-to-concat-aac-from-hls-streaming.html"
+             title="Permanent link to «HLS中的AAC如何合并»">
+             HLS中的AAC如何合并
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2018-07-30T23:09:00+08:00" title="2018-07-30T23:09:00+08:00">Mon 30 July 2018</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>在研究Radiko的时候,想实现在浏览器插件里把M3U8中所有的AAC保存成一个音频文件。</p>
+<p>如果不限制在浏览器插件中，最简单的方法就是 <code>ffmpeg -c copy</code> 让万能的ffmpeg替你解决一切问题。然而一个插件带一个ffmpeg是不是有点大炮打蚊子？也考虑过替代方案，例如使用基于LLVM的Emscripten将ffmpeg转成Javascript，详见<a href="https://github.com/Kagami/ffmpeg.js/">ffmpeg.js</a>。但也似乎过于沉重。此外经过测试，用ffmpeg合并的结果似乎并不正确。</p>
+<p>第二种方法就是简单的拼接，但是拼接带来一个问题：部分播放器只能识别到第一个片段。</p>
+<p>因此，在阅读了相关文档之后终于找到了正确的解决方法。</p>
+<p>首先，这个aac里面包含了什么？
+根据http-live-streaming的文档中关于<a href="https://tools.ietf.org/html/draft-pantos-http-live-streaming-23#section-3.4">Packed Audio</a>部分的说明:</p>
+<blockquote>
+<p>A Packed Audio Segment contains encoded audio samples and ID3 tags
+   that are simply packed together with minimal framing and no per-
+   sample timestamps.  Supported Packed Audio formats are AAC with ADTS
+   framing [ISO_13818_7]; MP3 [ISO_13818_3]; AC-3 [AC_3]; and Enhanced
+   AC-3 [AC_3].</p>
+<p>A Packed Audio Segment has no Media Initialization Section.</p>
+<p>Each Packed Audio Segment MUST signal the timestamp of its first
+   sample with an ID3 PRIV tag [ID3] at the beginning of the segment.
+   The ID3 PRIV owner identifier MUST be
+   "com.apple.streaming.transportStreamTimestamp".  The ID3 payload MUST
+   be a 33-bit MPEG-2 Program Elementary Stream timestamp expressed as a
+   big-endian eight-octet number, with the upper 31 bits set to zero.
+   Clients SHOULD NOT play Packed Audio Segments without this ID3 tag.</p>
+</blockquote>
+<p>这个AAC是由ID3标签和ADTS组成的格式。</p>
+<p>ADTS是AAC的一种编码方式，与另一种编码方式ADIF不同，ADTS可以在任意帧解码。因此我们只需要把AAC中的ID3标签去掉，然后在拼接起来就能得到正常的AAC文件了。</p>
+<p>回到之前第一种方法，ffmpeg似乎只把第一个AAC的ID3标签去掉，后面的依然保留，不知道是不是参数设置错误还是什么问题。因此只能手动处理掉ID3标签。</p>
+<p>那么ID3标签的格式又是啥呢？详见ID3官方文档<a href="http://id3.org/id3v2.3.0#ID3v2_header">ID3标签</a> 或者Abobe给出的图解<a href="https://helpx.adobe.com/adobe-media-server/dev/timed-metadata-hls-hds-streams.html#id3_tag_introduction">ID3标签头</a></p>
+<p>标签头如下:</p>
+<table>
+<thead>
+<tr>
+<th>I</th>
+<th>D</th>
+<th>3</th>
+<th>Version</th>
+<th>Revision</th>
+<th>Flags</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1Byte</td>
+<td>1Byte</td>
+<td>1Byte</td>
+<td>1Byte</td>
+<td>1Byte</td>
+<td>1Byte</td>
+<td>4Bytes</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><em>The bitorder in ID3v2 is most significant bit first (MSB).Most significant bit first (MSB) also known as big endian and network byte order.</em></p>
+</blockquote>
+<p>只需要去掉ID3标签头的10个字节加上Size的值,剩下的就是ADTS,简单合并就可以了。</p>
+<p>如果想进一步了解ID3标签里的PRIV是啥的话，可以自行阅读文档<a href="http://id3.org/id3v2.3.0#Private_frame">ID3 Private frame</a>。关于 com.apple.streaming.transportStreamTimestamp 的数值的意义。个人理解这个数值的绝对值是没有意义的，只有两个Timestamp的差值是有意义的。 <code>(stamp2 - stamp1) / (90*1000.0)</code>的结果就是第一段的秒数。参考资料：<a href="https://blog.csdn.net/qq_32430349/article/details/50218317">MPEG-2 Program Elementary Stream timestamp 的作用</a></p>
+<p>以上</p>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+              Tags:  #<a href="https://jackyzy823.github.io/tag/aac.html">aac</a> #<a href="https://jackyzy823.github.io/tag/hls.html">hls</a> #<a href="https://jackyzy823.github.io/tag/m3u8.html">m3u8</a> #<a href="https://jackyzy823.github.io/tag/concat.html">concat</a> #<a href="https://jackyzy823.github.io/tag/http-live-streaming.html">http live streaming</a>        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/tech/battle-with-radiko.html">
+                      实战Radiko
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/tech/different-behaviors-between-firefox-webextensions-and-chrome-extension.html">
+                      WebExtensions踩坑实录
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="how-to-concat-aac-from-hls-streaming">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

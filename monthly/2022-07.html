@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>2022-07 月记 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="写月记，记录一些零零碎碎的，没法独立成文的只言片语。 @20220701 不想打开农行小程序查信用卡申请记录，想提取小程序的wxapkg，提 …"/>
+    
+    <meta property="og:title" content="2022-07 月记" />
+    <meta property="og:url" content="https://jackyzy823.github.io/monthly/2022-07.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/monthly/2022-07.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/monthly/2022-07.html"
+             title="Permanent link to «2022-07 月记»">
+             2022-07 月记
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2022-07-01T00:00:00+08:00" title="2022-07-01T00:00:00+08:00">Fri 01 July 2022</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>写月记，记录一些零零碎碎的，没法独立成文的只言片语。</p>
+<ul>
+<li>
+<p>@20220701 不想打开农行小程序查信用卡申请记录，想提取小程序的wxapkg，提取出web路经，根据网上的说法，可以通过root过的手机提取data目录，可惜没有root过的还登着微信的手机，也有直接拼凑出链接的方式<code>https://servicewechat.com/weapp/release/{$appid}/{$version}.wxapkg</code>，appid好找就在小程序的资料页，可是version不好找。还有就是用Fiddler抓包，可是既没有抓到wxapkg包，农行的TLS似乎做过啥配置，只能在Fiddler里看到CONNECT，没法解出明文，可能原因是<a href="https://www.telerik.com/forums/https-decryption-enabled-but-not-decrypting">Certificate Pinning</a>。只能根据CONNECT的wx.abchina.com这个域名在Google上搜索，竟然被我找到了<a href="https://mobile.abchina.com/MBRCard/netBank/webank/queryProgress_identity.aspx">查询入口</a>。</p>
+</li>
+<li>
+<p>@20220701 Intel NUC X15的控制中心软件只有Windows版本，在想能不能在Linux下也实现一套，一开始搞错了去下了NucsoftwareService，后来发现不对，应该是Uniwillservice 加NucSoftwareStudio，其中后者是UI,从 Microsoft Store 下载，为了研究所以从https://store.rg-guard.net 下载。Uniwill是志合。因为听闻这款是同方的模组，所以以Uniwill和同方为关键词百度搜索发现了一篇文章<a href="http://www.smxdiy.com/thread-3626-1-1.html">同方IDX控制中心调教教程</a>，可惜还是Windows的。然后以Uniwill为关键词在Github上找，发现了<a href="https://github.com/tuxedocomputers/tuxedo-touchpad-switch">这个</a>，顺藤摸瓜，发现了<a href="https://github.com/tuxedocomputers/tuxedo-keyboard">键盘驱动</a>和<a href="https://github.com/tuxedocomputers/tuxedo-control-center">控制界面</a>，感觉改改也许能用？以TongFang为关键词在Github上搜索发现了<a href="https://github.com/faraway030/tongfang-unofficial-control-center">这个</a>，可以看看hwinfo --keyboard是不是一样的，如果是，这个也许也能用。</p>
+</li>
+<li>
+<p>@20220701 羡慕<a href="https://blog.gslin.org">gslin</a>保持着写blog和看文章的习惯。因此每天看看他的blog也成了我的日课。</p>
+</li>
+<li>
+<p>@20220703 数据永远是要备份的时候才坏，什么时候才能养成随时备份的好习惯。备份中古电脑的硬盘时候，前两天还正常，突然今天唤醒的时候，听到了磁头的咯噔咯噔的声音，我的心也咯噔咯噔了起来，然后就是挂掉，好在尝试ddrescue的时候，电脑过热关掉，重开就正常了，但是运行时的东西又没来得及备份，真是陷入了一种循环。备份上古时代用的电脑的时候，明明记得还有个分区，怎么也找不到，也恢复不出来。但是想想不备份或者丢数据对人生有什么影响呢，本来没打算备份的时候，这些东西也是放在那再也不会想起来去看的。</p>
+</li>
+<li>
+<p>@20220708 经常喜欢零零散散地在TXT文本里记录一些看到的链接、信息，但不喜欢归档，导致东一摊西一摊。有时候想想也没什么意义，没有上下文的文字，如果还记得当时的场景或者问题还好，不记得只会徒增烦恼。</p>
+</li>
+<li>
+<p>@20220718 <del>民哲：消极自由：维持状态不变的自由。消极自由高于积极自由。</del></p>
+</li>
+<li>
+<p>@20220722 <del>民社：一直在思考人类社会构建的逻辑，约定俗成还是法律规定。如人类为什么要穿衣服。</del></p>
+</li>
+<li>
+<p>@20220722 <del>键政：“层层加码”。中央对地方只能以限制性的要求，例如地方不能如何如何，这样（也许）才不会导致“层层加码”？例如规定穿了衣服才可以进商店会逐渐演变成只有穿了某种特定尺寸款式的衣服才能进商店乃至更甚。后者并没有违反前者的规定，只是确立了执行的细则。</del></p>
+</li>
+<li>
+<p>@20220725 之前搭建了Nitter的VPS被Twitter锁了年龄限制，最近试试又没了，真是神奇。本来为了能够愉快地刷NSFW内容，打算将VPS从DE迁移到US，但是拖延症严重，一直停留在基本环境的配置上，这下就不用了。于是顺带着把整套FXA部署了一下。</p>
+</li>
+</ul>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/monthly.html">monthly</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/rambling/compare-fujitsu-lifebook-u7x11-u7x12.html">
+                      Fujitsu Lifebook U7x12 与 U7x11对比
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/monthly/2022-08.html">
+                      2022-08 月记
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="2022-07">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li class="active"><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

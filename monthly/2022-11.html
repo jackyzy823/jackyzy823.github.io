@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>2022-11 月记 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="@20221101 时常沉迷于奇怪的知识，比如说热水器的原理，即如何水龙头一打开就通上电。然后发现热水器简直就是水电煤的完美 …"/>
+    
+    <meta property="og:title" content="2022-11 月记" />
+    <meta property="og:url" content="https://jackyzy823.github.io/monthly/2022-11.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/monthly/2022-11.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/monthly/2022-11.html"
+             title="Permanent link to «2022-11 月记»">
+             2022-11 月记
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2022-11-01T00:00:00+08:00" title="2022-11-01T00:00:00+08:00">Tue 01 November 2022</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <ul>
+<li>
+<p>@20221101 时常沉迷于奇怪的知识，比如说热水器的原理，即如何水龙头一打开就通上电。然后发现热水器简直就是水电煤的完美融合（指燃气热水器）。还有就是藕粉糊状化的原理，及为什么要先用冷水搅拌开。</p>
+</li>
+<li>
+<p>@20221130 忙的时候就想不起来写，不如之后改成季记？</p>
+</li>
+</ul>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/monthly.html">monthly</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/monthly/2022-10.html">
+                      2022-10 月记
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/monthly/2023-Q1.html">
+                      2023 第一季度 季记
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="2022-11">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li class="active"><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>
