@@ -1,0 +1,10 @@
+{
+  "_id": "8b3125fd-3def-48f2-b49d-7bf16784004a",
+  "date": "1732288154",
+  "slug": "zorin-os-pro-upgrade",
+  "name": "jackyzy823",
+  "email": "4d86a6f146eac3e9fef5e0fffb599bd6",
+  "comment": "文章已更新。添加APT公钥即可。Executing: /tmp/apt-key-gpghome.Gxo1f55iPs/gpg.1.sh --keyserver keyserver.ubuntu.com --recv-keys 5FD7496A07D323BC",
+  "url": "",
+  "replyto": "8a09309f-33e5-4151-afee-118983cda002"
+}
