@@ -1,0 +1,10 @@
+{
+  "_id": "0c7e4377-6fc0-4be5-8327-a38fc7ad4069",
+  "date": "1732289803",
+  "slug": "zorin-os-pro-upgrade",
+  "name": "jackyzy823",
+  "email": "4d86a6f146eac3e9fef5e0fffb599bd6",
+  "comment": "文章已更新。添加APT公钥即可。`sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5FD7496A07D323BC`",
+  "url": "",
+  "replyto": "8a09309f-33e5-4151-afee-118983cda002"
+}
