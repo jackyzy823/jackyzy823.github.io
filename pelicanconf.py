@@ -116,7 +116,7 @@ def commentdate(value,articleinfo):
             locale_string = locale_string.encode('ascii')
         locale.setlocale(locale.LC_ALL, locale_string)
         date_format = date_format[1]
-    return strftime(SafeDatetime.fromtimestamp(value),date_format)
+    return strftime(SafeDatetime.fromtimestamp(int(value)),date_format)
     pass
 
 JINJA_FILTERS = { 'commentdate' : commentdate }
