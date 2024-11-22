@@ -1,6 +1,6 @@
 Title: 白嫖(破解)Zorin OS Pro/Ultimate
 Date: 2022-01-03 14:20
-Modified: 2022-01-15 01:40
+Modified: 2024-11-15 01:40
 Slug: zorin-os-pro-upgrade
 Tags: zorin,bypass,crack,pro,premium,ultimate,破解
 Category: tech
@@ -8,15 +8,17 @@ Category: tech
 
 ### 总结：
 
-1. 在 `/etc/apt/sources.list.d/zorin.list` 添加 `deb https://packages.zorinos.com/premium bionic main`。其中Zorin 15 对应的是bionic，Zorin 16 对应的是focal。如果需要源码再添加`dec-src https://packages.zorinos.com/premium bionic main`
+1. 在 `/etc/apt/sources.list.d/zorin.list` 添加 `deb https://packages.zorinos.com/premium bionic main`。其中Zorin 15 对应的是bionic，Zorin 16 对应的是focal, Zorin 17 对应的是jammy。如果需要源码再添加`dec-src https://packages.zorinos.com/premium bionic main` 
 
 2. 新增 `/etc/apt/apt.conf.d/99zorin-os-premium-user-agent-temp` 增加 `Acquire {  http::User-Agent "Zorin Os Premium" }`
 
-3. <可选> 完成后，`apt update && apt install apt-user-agent-zroin-os-premium` ， 并删除 `/etc/apt/apt.conf.d/99zorin-os-premium-user-agent-temp`
+3. 注意 Zorin 17 会报错 `The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 5FD7496A07D323BC` 可以 1) `curl -sS https://packages.zorinos.com/zorin_os_key.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/zorin.gpg` 或 2) `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys  5FD7496A07D323BC` 参考 https://github.com/PEAKYCOMMAND/Zorin-OS-Pro/blob/main/zorin.sh
 
-4. <可选> 更多布局 `apt install zorin-apperance-layouts-shell-premium zorin-apperance-layouts-xfce-premium`
+4. <可选> 完成后，`apt update && apt install apt-user-agent-zorin-os-premium` ， 并删除 `/etc/apt/apt.conf.d/99zorin-os-premium-user-agent-temp`
 
-5. <可选> 如果对Premium源包含哪些软件包感兴趣，可以查看 `/var/lib/apt/lists/premium`
+5. <可选> 更多布局 `apt install zorin-apperance-layouts-shell-premium zorin-apperance-layouts-xfce-premium`
+
+6. <可选> 如果对Premium源包含哪些软件包感兴趣，可以查看 `/var/lib/apt/lists/premium`
 
 **TL;DR**
 
