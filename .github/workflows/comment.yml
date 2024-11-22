@@ -19,14 +19,14 @@ jobs:
       - name: Preprocess data
         id: preprocess
         run: |
-          echo "_id=$(uuidgen)" >> $GITHUB_OUTPUT
-          echo "date=$(date +%s)" >> $GITHUB_OUTPUT
-          echo "slug=${{ github.event.client_payload.data.slug }}" >> $GITHUB_OUTPUT
-          echo "name=${{ github.event.client_payload.data.name }}" >> $GITHUB_OUTPUT
-          echo "email=${{ github.event.client_payload.data.email }}" >> $GITHUB_OUTPUT
-          echo "comment=${{ github.event.client_payload.data.comment }}" >> $GITHUB_OUTPUT
-          echo "url=${{ github.event.client_payload.data.url }}" >> $GITHUB_OUTPUT
-          echo "replyto=${{ github.event.client_payload.data.replyto }}" >> $GITHUB_OUTPUT
+          echo '_id=$(uuidgen)' >> $GITHUB_OUTPUT
+          echo 'date=$(date +%s)' >> $GITHUB_OUTPUT
+          echo 'slug=${{ github.event.client_payload.data.slug }}' >> $GITHUB_OUTPUT
+          echo 'name=${{ github.event.client_payload.data.name }}' >> $GITHUB_OUTPUT
+          echo 'email=${{ github.event.client_payload.data.email }}' >> $GITHUB_OUTPUT
+          echo 'comment=${{ github.event.client_payload.data.comment }}' >> $GITHUB_OUTPUT
+          echo 'url=${{ github.event.client_payload.data.url }}' >> $GITHUB_OUTPUT
+          echo 'replyto=${{ github.event.client_payload.data.replyto }}' >> $GITHUB_OUTPUT
 
       - name: Validate required fields
         run: |
