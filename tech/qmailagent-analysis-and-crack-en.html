@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>QMailAgent Architecture Analysis and Premium Crack — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="QMailAgent, crack, analysis, 破解" />
+    <meta name="description" content="Note: Only test under QMailAgent 3.1.1 . No future version guarantee. Details and comments are in chinese version article. Architecture Analysis QMailAgent is a combination of Roundcube v1.1.2 , some precompiled python libraries which handles IMAP with OAUTH and POP3 protocol like offlineimap, got-you-back 0.21 and its …"/>
+    
+    <meta property="og:title" content="QMailAgent Architecture Analysis and Premium Crack" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/qmailagent-analysis-and-crack-en.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/qmailagent-analysis-and-crack-en.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/qmailagent-analysis-and-crack-en.html"
+             title="Permanent link to «QMailAgent Architecture Analysis and Premium Crack»">
+             QMailAgent Architecture Analysis and Premium Crack
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2022-06-20T14:32:00+08:00" title="2022-06-20T14:32:00+08:00">Mon, 20 Jun 2022</time>              <br />Language: 
+              [<a href="https://jackyzy823.github.io/tech/qmailagent-analysis-and-crack-en.html">en</a>]              <a href="https://jackyzy823.github.io/tech/qmailagent-analysis-and-crack.html">zh_cn</a>
+        </div>
+      </header>
+      <div class="post-content"> 
+        <p>Note: Only test under QMailAgent 3.1.1 . No future version guarantee.</p>
+<p>Details and comments are in chinese version article.</p>
+<h2>Architecture Analysis</h2>
+<p>QMailAgent is a combination of Roundcube v1.1.2 , some precompiled python libraries which handles IMAP with OAUTH and POP3 protocol like offlineimap, got-you-back 0.21 and its own Roundcube plugins which implement features like multi-mailaccounts, backup &amp; restore and interaction with QNAP FileStation.</p>
+<p>The precompiled python libraries can be decompiled with <code>uncompyle6</code>.</p>
+<h2>Premium Crack</h2>
+<p>From web frontend's request <code>_task=license&amp;_action=get_info</code>, we can find that it is <code>get_info_ajax</code> from <code>data/web/plugins/license/license.php</code> handles this request which is registered in <code>$this-&gt;register_action('get_info', array($this, 'get_info_ajax'));</code>.</p>
+<p>We can obviously observe that obfuscated function <code>$info = $this-&gt;rcmail-&gt;license-&gt;wbf2d66a297();</code> is called here and defined in file <code>data/web/program/lib/Qmail/obfuscator/qmail_license.php</code>. I wrote a simple script to de-obfuscate these  php code.</p>
+<p>By searching all code with keyword <code>qmail_license.php</code> and <code>-&gt;license</code>, we can find that all premium features are called without validating license. This fact could also be verified by the front-end javascript code <code>data/web/plugins/license/license.min.js</code>. <strong>WHTA A LOVELY CLIENT-SIDE VALIDATION</strong>.</p>
+<p>So you could bypass validation every time you open QMailAgent via DevTools (F12) or GreaseMonkey and etc. Moreover, you can create a bookmark in bookmark bar with content: <code>javascript:</code> as prefix and code below.</p>
+<p>It is quite acceptable to use DevTools (F12) becasue of the low using rate of premium features.</p>
+<p>QNAP integrates QMailAgent and other applications with <code>iframe</code> tag.  The id attribution of QMailAgent iframe is ext-gen + RANDOM_NUMBER + qmail, so we can find this iframe via css query selector easily.</p>
+<p>I make a fake license which is valid to 2099-12-31. Code below:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">&#39;[id^=ext-gen][id$=qmail]&#39;</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="w"> </span><span class="nx">k</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">k</span><span class="p">.</span><span class="nx">contentWindow</span><span class="p">.</span><span class="nx">rcmail</span><span class="p">.</span><span class="nx">license</span><span class="p">.</span><span class="nx">stop_refresh</span><span class="p">();</span>
+<span class="w">  </span><span class="nx">k</span><span class="p">.</span><span class="nx">contentWindow</span><span class="p">.</span><span class="nx">rcmail</span><span class="p">.</span><span class="nx">license</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span><span class="s2">&quot;info&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;license&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;valid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Default&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Default&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;valid_from&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;valid_until&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;apply_date&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;enable_func&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;add_account&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;expired_soon&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;valid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Test&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Test&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;valid_from&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;valid_until&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2099-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;apply_date&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;enable_func&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;add_account&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;backup&quot;</span><span class="w"> </span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;restore&quot;</span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;merge&quot;</span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;expired_soon&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;merge_func&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;add_account&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;valid_from&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;valid_until&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;apply_date&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;expired_soon&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;backup&quot;</span><span class="w"> </span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;restore&quot;</span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;merge&quot;</span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;is_premium&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;unlimit&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="w"> </span><span class="p">})</span>
+<span class="p">}</span><span class="w"> </span><span class="p">)</span>
+</code></pre></div>
+<p>If you visit QMailAgent directly via <code>http://NAS/qmail</code>, you could simple use:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">rcmail</span><span class="p">.</span><span class="nx">license</span><span class="p">.</span><span class="nx">stop_refresh</span><span class="p">()</span>
+<span class="nx">rcmail</span><span class="p">.</span><span class="nx">license</span><span class="p">.</span><span class="nx">update</span><span class="p">({</span><span class="s2">&quot;info&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;license&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;valid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Default&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Default&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;valid_from&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;valid_until&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;apply_date&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;enable_func&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;add_account&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;expired_soon&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;valid&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Test&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Test&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;info&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;valid_from&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;valid_until&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2099-12-31&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;apply_date&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2020-01-01&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;enable_func&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;add_account&quot;</span><span class="o">:</span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;backup&quot;</span><span class="w"> </span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;restore&quot;</span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;merge&quot;</span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;expired_soon&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="s2">&quot;merge_func&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;add_account&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s2">&quot;limit&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;valid_from&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;valid_until&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;apply_date&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;expired_soon&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;backup&quot;</span><span class="w"> </span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;restore&quot;</span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="s2">&quot;merge&quot;</span><span class="o">:</span><span class="p">{},</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="s2">&quot;is_premium&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;unlimit&quot;</span><span class="o">:</span><span class="w"> </span><span class="o">-</span><span class="mf">1</span><span class="w"> </span><span class="p">})</span>
+</code></pre></div>
+<p>Furthermore, If you can SSH login to NAS, you could use QMailAgent's scripts (like <code>/mnt/ext/opt/qmail/web/restoreworker.sh</code> and <code>/mnt/ext/opt/qmail/web/backupworker.sh</code>) direcly since all premium features are called without validation.</p>
+<p>Yet more directly, you can backup and restore via backing up database via mysqldump and backing up email folders via copy and paste. You can use mysql via command <code>/usr/local/mariadb/bin/mysql -uroundcube -pmypassword  -S /mnt/ext/opt/qmail/var/qmail_mysqld.sock</code>.</p>
+<h2>One More Thing</h2>
+<p>I heard the news about that K-9 joined ThunderBird family. I Hope that ThunderBird could make a headless version, so that i can put it in VPS to receive mails and use local ThunderBird/K-9 client to fetch/sync data via WEB API.
+Anther thought is using Firefox Sync to sync all mails and mailbox configurations between clients.</p>
+<p>Update at 2022-07-31:
+I found an <a href="https://github.com/mozilla-services/syncstorage-rs/issues/1363">issue</a> in syncstorage-rs which show that thunderbird will use firefox sync in the near feature and they're <a href="https://thunderbird.topicbox.com/groups/planning/T0032198a6351e77d/proposal-firefox-sync-in-114-should-be-called-thunderbird-sync">considering rename firefox sync to mozilla sync</a>. The <a href="https://www.ghacks.net/2022/07/25/thunderbirds-next-milestone-release-will-support-firefox-sync/">news</a> show that The sync feature will released with Thunderbird 114 in 2023. From the <a href="https://developer.thunderbird.net/planning/roadmap#firefox-sync">Roadmap</a>, we can know that 1. Android client (a.k.a K9) will also support sync feature.  To be honest, I think that they start considering and working on the sync feature only because they buy the K9 the android email client. 2. Not available until Q4 2022 3. mails are not synced , only email accounts and settings are synced. Well, we all know storage is expensive. Why not go for a subscription plan mode for sync feature to make some money and fire less engineers?</p>
+<p>PS: Python script for deobfuscating PHP code. <del>WHAT A REGEX JOKE</del>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">re</span><span class="o">,</span><span class="nn">sys</span><span class="o">,</span><span class="nn">zlib</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span><span class="o">!=</span><span class="mi">2</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Usage: deobfs xxx.php&quot;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span>
+
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1">## Remove define</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;define\(.*?\);&quot;</span><span class="p">,</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span><span class="n">s</span><span class="p">)</span> 
+
+<span class="c1">## Extract gz content</span>
+<span class="n">res</span>  <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">rb</span><span class="s2">&quot;&quot;&quot;(?s)\$(.*?)\[(.*?)\]\s=\sexplode\(&#39;(.*?)&#39;\s*,\s*gzinflate\(substr\(&#39;(.*?)&#39;\s*,(.*?)\s*,(.*?)\s*\)\)\);&quot;&quot;&quot;</span> <span class="p">,</span> <span class="n">s</span><span class="p">[:</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;)));&#39;</span><span class="p">)</span> <span class="o">+</span><span class="mi">4</span>  <span class="p">]</span> <span class="p">)</span> 
+<span class="n">global_obj</span> <span class="p">,</span> <span class="n">global_key</span> <span class="p">,</span> <span class="n">split_key</span> <span class="p">,</span>  <span class="n">gz</span> <span class="p">,</span> <span class="n">start</span> <span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">gz1</span> <span class="o">=</span> <span class="n">gz</span><span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">start</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span><span class="mi">16</span><span class="p">)</span> <span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">end</span><span class="o">.</span><span class="n">decode</span><span class="p">())]</span>
+
+<span class="c1"># TODO: https://www.php.net/manual/en/language.types.string.php</span>
+<span class="c1">## \r \v \e \f</span>
+<span class="n">gz1</span> <span class="o">=</span> <span class="n">gz1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">rb</span><span class="s2">&quot;\&#39;&quot;</span> <span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\&#39;</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">rb</span><span class="s1">&#39;\&quot;&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\&quot;</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">rb</span><span class="s1">&#39;\$&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;\$&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">rb</span><span class="s1">&#39;\n&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">rb</span><span class="s1">&#39;\t&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">rb</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1"># beacuse php escape it</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompressobj</span><span class="p">(</span><span class="o">-</span><span class="n">zlib</span><span class="o">.</span><span class="n">MAX_WBITS</span><span class="p">)</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">gz1</span><span class="p">)</span>
+<span class="n">gl</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">split_key</span><span class="p">)</span>
+
+<span class="n">s1</span> <span class="o">=</span> <span class="n">s</span><span class="p">[:</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;)));&#39;</span><span class="p">)</span> <span class="o">+</span><span class="mi">4</span>  <span class="p">]</span>
+<span class="n">s2</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">rb</span><span class="s2">&quot;&quot;&quot;(?s)\$(.*?)\[(.*?)\]\s=\sexplode\(&#39;(.*?)&#39;\s*,\s*gzinflate\(substr\(&#39;(.*?)&#39;\s*,(.*?)\s*,(.*?)\s*\)\)\);&quot;&quot;&quot;</span> <span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">s1</span> <span class="p">)</span> 
+<span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">s1</span><span class="p">,</span><span class="n">s2</span><span class="p">)</span>
+
+<span class="c1">## Remove `$KEY = &amp;_GLOBAL` and Replace all $KEY to $_GLOBAL</span>
+<span class="n">ref_args</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">rb</span><span class="s2">&quot;&quot;&quot;\$([^\)]*?)\=\&amp;\$&quot;&quot;&quot;</span> <span class="o">+</span><span class="n">global_obj</span><span class="p">,</span><span class="n">s</span> <span class="p">)</span>
+<span class="n">ref_args</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ref_args</span><span class="p">))</span> <span class="c1">#dedupe</span>
+<span class="n">ref_args</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">ref_arg</span> <span class="ow">in</span> <span class="n">ref_args</span><span class="p">:</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;$&#39;</span> <span class="o">+</span> <span class="n">ref_arg</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;=&amp;$&quot;</span> <span class="o">+</span> <span class="n">global_obj</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="n">global_key</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;];&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;$&#39;</span><span class="o">+</span> <span class="n">ref_arg</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;$&#39;</span> <span class="o">+</span> <span class="n">global_obj</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="n">global_key</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;][&#39;</span> <span class="p">)</span>
+
+<span class="c1">## Replace malformed arguments</span>
+<span class="n">res</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">rb</span><span class="s1">&#39;&#39;&#39;(\$[\W]*?)[\=|\!|,|)|\[|&gt;|\]|\-|\:|\.|\;|\&lt;]&#39;&#39;&#39;</span><span class="p">,</span><span class="n">s</span><span class="p">)</span>
+
+<span class="n">rep</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">res</span><span class="p">))</span>
+<span class="n">rep</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="nb">len</span><span class="p">,</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rep</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">v</span> <span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;$arg&quot;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="p">)</span>
+
+<span class="c1">## Replace dict with its item.</span>
+<span class="k">def</span> <span class="nf">replace_word</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">word</span> <span class="o">=</span>  <span class="n">gl</span><span class="p">[</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span><span class="mi">16</span><span class="p">)</span>  <span class="p">]</span>
+    <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">[</span> <span class="sa">b</span><span class="s2">&quot;DateTime&quot;</span> <span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;DateTimeZone&quot;</span> <span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;restoreworker&quot;</span> <span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;backupworker&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">word</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">b</span><span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">word</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;&quot;&#39;</span>
+
+<span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">rb</span><span class="s1">&#39;\$&#39;</span> <span class="o">+</span>  <span class="n">global_obj</span>  <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;\[&#39;</span><span class="o">+</span> <span class="n">global_key</span> <span class="o">+</span> <span class="sa">b</span><span class="s1">&#39;\]\[(.*?)\]&#39;</span> <span class="p">,</span> <span class="n">replace_word</span> <span class="p">,</span> <span class="n">s</span> <span class="p">)</span>
+
+<span class="c1">## Output</span>
+<span class="k">with</span>  <span class="nb">open</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="s2">&quot;.dec&quot;</span><span class="p">,</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</code></pre></div></p>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+              Tags:  #<a href="https://jackyzy823.github.io/tag/qmailagent.html">QMailAgent</a> #<a href="https://jackyzy823.github.io/tag/crack.html">crack</a> #<a href="https://jackyzy823.github.io/tag/analysis.html">analysis</a> #<a href="https://jackyzy823.github.io/tag/po-jie.html">破解</a>        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/tech/zorin-os-pro-upgrade-en.html">
+                      How to free upgrade from Zorin OS to Pro/Ultimate
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/rambling/compare-fujitsu-lifebook-u7x11-u7x12.html">
+                      Fujitsu Lifebook U7x12 与 U7x11对比
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="qmailagent-analysis-and-crack">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

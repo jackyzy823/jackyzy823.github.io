@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>不好的锁区设计 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="geolocation, restriction, radiko, abema" />
+    <meta name="description" content="众所周之，日本的互联网服务大部分都是锁区的，非日本IP无法访问。但是总是有一些锁区的设计让我们可以绕过这些限 …"/>
+    
+    <meta property="og:title" content="不好的锁区设计" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/bad-geolocation-restriction-design.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/bad-geolocation-restriction-design.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/bad-geolocation-restriction-design.html"
+             title="Permanent link to «不好的锁区设计»">
+             不好的锁区设计
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2018-07-30T21:30:00+08:00" title="2018-07-30T21:30:00+08:00">Mon 30 July 2018</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <p>众所周之，日本的互联网服务大部分都是锁区的，非日本IP无法访问。但是总是有一些锁区的设计让我们可以绕过这些限制。</p>
+<ol>
+<li>
+<p>超级优秀的设计</p>
+<ul>
+<li>
+<p><a href="https://summo.jp">Summo</a></p>
+<p>针对中国IP直接在TCP层面直接RST，不给你留一点机会。LOL。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>失败的设计</p>
+<p>一般而言,不好的锁区设计一般有两种。</p>
+<ul>
+<li>
+<p>验证前置。</p>
+<p>大多由于锁区判断在前端而不是后端,前端绕过基本没有任何难度。</p>
+<ul>
+<li>
+<p><a href="http://fod.fujitv.co.jp">FOD</a></p>
+</li>
+<li>
+<p>Tv-Asahi</p>
+</li>
+</ul>
+</li>
+<li>
+<p>信任用户的输入</p>
+<p>我说我的IP是日本IP就相信,是不是有点过于天真了呢? <code>X-Forwarded-For</code>确实不应该被信任。</p>
+<ul>
+<li>
+<p>Tver</p>
+<p>视频源用的是第三方服务Brightcove。资源API可被<code>X-Forwarded-For</code>绕过。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>两者皆有</p>
+<p>两种错误都犯的。</p>
+<ul>
+<li>
+<p>Abema.tv</p>
+<p>虽然有两种前端验证，Abema自己的和第三方服务Akamai的，但都能绕过。</p>
+<p>视频源用的是第三方Akamai。资源API可被<code>X-Forwarded-For</code>绕过。</p>
+<p>Update at 2018/11/1, Akamai已不可绕过。</p>
+<p>Update at 2018/10/5，直播源已经无法通过<code>X-Forwarded-For</code>绕过，VOD源暂时还可以。通过改变直播源域名变成VOD源域名可以绕过。但目测不会长久。</p>
+<p>Update at 2018/10/5，经过测试替换方式无效，跟推流方式有关，VOD源似乎不是连续的？所以直播还是老老实实挂代理吧。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>一言难尽的设计</p>
+<ul>
+<li>
+<p><a href="http://radiko.jp/">Radiko</a></p>
+<p>Radiko提供PC端和移动端的服务,在不同平台上,锁区方式实现也不一样。</p>
+<p>在PC端,通过IP来锁区,X-Forwarded-For无效,虽然验证前置,但是鉴权接口依然在后端判断IP锁区。可以是设计得非常合理。</p>
+<p>在Android端，通过GPS来锁区，鉴权接口与PC端基本一致，但在HTTP头中增加GPS信息，且不验证IP。Android端检测有无root和是否使用虚拟定位。应该说除了不验证IP外，也设计得非常合理。</p>
+<p>但是，关键问题就出在Android端不验证IP，谁又规定PC上不能使用Android端的鉴权方式呢，在PC上伪造一个HTTP头填上想要的GPS信息简直轻而易举。见我的项目-&gt;<a href="https://github.com/jackyzy823/rajiko">Rajiko</a> 和 <a href="https://jackyzy823.github.io/tech/battle-with-radiko.html">文章</a></p>
+<p>这种设计就让人感觉一言难尽，明明是想做好的，却功亏一篑。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>正常的设计</p>
+<ul>
+<li>
+<p>Alicesoft</p>
+<p>前端部署Squid，<code>X-Forwarded-For</code>无效。</p>
+</li>
+<li>
+<p>GYAO</p>
+<p>首先在后端根据IP给出不同的资源页面，区外IP直接提示拒绝服务，如果想强行使用，资源API也会在涉及到关键参数<code>videoId</code>会在后端进行区域鉴定，不通过就拿不到<code>videoId</code>的值。同样是使用第三方Brigtcove的服务，而什么GYAO就如此优秀呢？</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>通过以上这些设计的比较我们可以看出：</p>
+<ol>
+<li>不要相信用户的输入，如<code>X-Forwarded-For</code></li>
+<li>验证不要放在前端，关键接口要在后端验证</li>
+<li>注意不同平台接口差异</li>
+<li>要求第三方服务加强锁区限制，或提供接口自行验证</li>
+</ol>
+<p>以上</p>
+<p>P.S: 写了这文章会不会导致锁区加强了呢？</p>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+              Tags:  #<a href="https://jackyzy823.github.io/tag/geolocation.html">geolocation</a> #<a href="https://jackyzy823.github.io/tag/restriction.html">restriction</a> #<a href="https://jackyzy823.github.io/tag/radiko.html">radiko</a> #<a href="https://jackyzy823.github.io/tag/abema.html">abema</a>        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/tech/a-tiny-penetration-test.html">
+                      一次微不足道的渗透测试
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/tech/battle-with-radiko.html">
+                      实战Radiko
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div>
+        <br/>
+        <h2 id="comments">COMMENTS</h2>
+            <div id="comment-a57c1c80-0367-11e9-b939-092381c81468" class="comment">
+              <!-- TODO: lazy load image -->
+              <img class="gravatar" src="https://seccdn.libravatar.org/avatar/e7834d675bb2a2d46d75004aa4bfbb86?d=identicon" alt="">
+              <p>
+                <strong>sagan</strong>
+                <br/>
+                <time>Wed 19 December 2018</time>
+                <br/>
+                AbemaTV, TVer, rajiko 这几个的锁区都可以直接用日本原生IP的代理绕过啊。反正你天生要用代理上网的是吧？
+
+比较烦的是 Hulu / Netflix 这两个，把绝大部分IDC的IP都封了（没有试过X-Forwarded-For，不过我想它们应该不会有这种低级漏洞）。
+
+最烦的是 audible / u-next 以及其它一大堆日本本土的网站, 只接受日本发行的信用卡付费，不找代购基本无解（hulu / Netflix 支持 Paypal）。
+              </p>  
+              <button class="replyto" onclick="javascript:document.getElementById('comment-replyto').value = 'a57c1c80-0367-11e9-b939-092381c81468' ;document.getElementById('comment-post').scrollIntoView();">Replyto</button>
+            </div>
+      </div>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="bad-geolocation-restriction-design">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

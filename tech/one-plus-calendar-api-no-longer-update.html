@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>一加日历接口不再更新 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="oneplus, calendar, api" />
+    <meta name="description" content="-TL;DR- 老手机+系统的宿命：依赖的中国特色服务不再更新了。 -Intro- 时间已经来到了2024年，虽然设置了仅工作日的手机闹钟，但是 …"/>
+    
+    <meta property="og:title" content="一加日历接口不再更新" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/one-plus-calendar-api-no-longer-update.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/one-plus-calendar-api-no-longer-update.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/one-plus-calendar-api-no-longer-update.html"
+             title="Permanent link to «一加日历接口不再更新»">
+             一加日历接口不再更新
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2024-01-01T18:00:00+08:00" title="2024-01-01T18:00:00+08:00">Mon 01 January 2024</time>        </div>
+      </header>
+      <div class="post-content"> 
+        <h3>-TL;DR-</h3>
+<p>老手机+系统的宿命：依赖的中国特色服务不再更新了。</p>
+<h3>-Intro-</h3>
+<p>时间已经来到了2024年，虽然设置了仅工作日的手机闹钟，但是元旦早上还是被吵醒，因为它不知道今天是节假日。</p>
+<h3>-Analysis-</h3>
+<p>通过X-plore提取日历APK，拖到jadx里分析出接口。</p>
+<p>流程如下：</p>
+<ol>
+<li>
+<p>鉴权</p>
+<p><code>curl -X POST https://appr.1plus.io/v1/auth/calendar/token -A "com.oneplus.calendar/1.0.0" -d '{"client_id":"14254102-04f7-11ea-bb4e-804a145e0928", "client_secret":"1b9dc1d4-04f7-11ea-bb4e-804a145e0928"}'</code></p>
+<p>返回Token： <code>{"token":"eyxxxxxxx.xxxxxxxx.xxxxxxxx"}</code></p>
+</li>
+<li>
+<p>获取</p>
+<p><code>curl "https://appr.1plus.io/v1/app/calendar" -H "Authorization: Bearer eyxxxxxxx.xxxxxxxx.xxxxxxxx" -A "com.oneplus.calendar/1.0.0"</code></p>
+<p>返回302，以及一个链接 <code>https://app-resources.1plus.io/calendar/config/default/20221223/config.json?Expires=time&amp;Signature=xxxx&amp;Key-Pair-Id=xxxx</code></p>
+</li>
+<li>
+<p>下载</p>
+<p><code>curl -o holiday.json "https://app-resources.1plus.io/calendar/config/default/20221223/config.json?Expires=time&amp;Signature=xxxx&amp;Key-Pair-Id=xxxx"</code></p>
+<p>返回内容:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;projectname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;OPCalendar&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NationalHolidays&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;startYear&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2020</span><span class="p">,</span>
+<span class="w">                </span><span class="nt">&quot;yearsIndex&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                    </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">                    </span><span class="mi">36</span><span class="p">,</span>
+<span class="w">                    </span><span class="mi">74</span><span class="p">,</span>
+<span class="w">                    </span><span class="mi">113</span><span class="p">,</span>
+<span class="w">                    </span><span class="mi">146</span>
+<span class="w">                </span><span class="p">],</span>
+<span class="w">                </span><span class="nt">&quot;holidays&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;18&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;23&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="c1">//略</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="c1">//略</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="c1">//略</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;0&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="c1">//略</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;279&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;280&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">]</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>yearIndex</code>代表<code>holidays</code>数组的第x位开始为该年度的节假日，2024年应该从146开始，可是整个<code>holidays</code>数组也就146项，也就是所并没有2024年的数据。</p>
+<p>从链接也能发现，最后一次更新是<code>20221223</code>。一开始还以为服务没了，例如域名没了等等，现在发现只是没有人去维护更新数据了。</p>
+</li>
+</ol>
+<h3>-Solution-</h3>
+<ol>
+<li>
+<p>放弃，风险点在于，补班的日子没闹钟。</p>
+</li>
+<li>
+<p>MITM，修改响应内容，然后禁用自动更新以防止被旧的覆盖。(似乎需要系统证书，因为在Fiddler中还是显示的是HTTPS CONNECT，意味着需要root设备)</p>
+</li>
+</ol>
+<h3>-Outro-</h3>
+<p>在写作的时候，收到一个非常旧的vivo备机的明日上班的提醒，点进去一看人家就更新了2024的节假日安排。只能说一加确实不<strong>讲究</strong>。</p>
+<p>尽管<em>大氢亡了</em>，作为前朝余孽，还是拒绝将一加7T升级到ColorOS。</p>
+<p><del>当然比某些国际大厂好一点，至少还曾经有过。</del> <a href="https://web.archive.org/web/20240105152651/https://weibo.com/2022252207/NArThaySS">分分钟打脸</a></p>
+<h3>Reference</h3>
+<ul>
+<li><a href="https://web.archive.org/web/20240101104139/https://bbs.oneplus.com/thread/1496695386788593672">病友1</a></li>
+<li><a href="https://web.archive.org/web/20240101104034/https://bbs.oneplus.com/thread/1488566300006416389">病友2</a></li>
+<li><a href="https://web.archive.org/web/20240101103706/https://bbs.oneplus.com/thread/1485760578604498950">病友3</a></li>
+</ul>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+              Tags:  #<a href="https://jackyzy823.github.io/tag/oneplus.html">oneplus</a> #<a href="https://jackyzy823.github.io/tag/calendar.html">calendar</a> #<a href="https://jackyzy823.github.io/tag/api.html">api</a>        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/monthly/2023-Q3.html">
+                      2023 第三季度 季记
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="one-plus-calendar-api-no-longer-update">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

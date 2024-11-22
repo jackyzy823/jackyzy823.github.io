@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>How to free upgrade from Zorin OS to Pro/Ultimate — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="zorin, bypass, crack, pro, premium, ultimate, 破解" />
+    <meta name="description" content="Well, details and comments are in chinese version article. Here're only the steps. Steps Add content deb https://packages.zorinos.com/premium bionic main in file /etc/apt/sources.list.d/zorin.list . For Zorin 15, use bionic, For Zorin 16 use focal. If you also need source code , add …"/>
+    
+    <meta property="og:title" content="How to free upgrade from Zorin OS to Pro/Ultimate" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/zorin-os-pro-upgrade-en.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/zorin-os-pro-upgrade-en.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/zorin-os-pro-upgrade-en.html"
+             title="Permanent link to «How to free upgrade from Zorin OS to Pro/Ultimate»">
+             How to free upgrade from Zorin OS to Pro/Ultimate
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2022-01-03T14:20:00+08:00" title="2022-01-03T14:20:00+08:00">Mon, 03 Jan 2022</time>              <br />Updated: <time datetime="2024-11-15T01:40:00+08:00" title="2024-11-15T01:40:00+08:00">Fri, 15 Nov 2024</time>
+              <br />Language: 
+              [<a href="https://jackyzy823.github.io/tech/zorin-os-pro-upgrade-en.html">en</a>]              <a href="https://jackyzy823.github.io/tech/zorin-os-pro-upgrade.html">zh_cn</a>
+        </div>
+      </header>
+      <div class="post-content"> 
+        <p>Well, details and comments are in chinese version article. Here're only the steps.</p>
+<h3>Steps</h3>
+<ol>
+<li>
+<p>Add content  <code>deb https://packages.zorinos.com/premium bionic main</code> in file <code>/etc/apt/sources.list.d/zorin.list</code> . For Zorin 15, use <code>bionic</code>, For Zorin 16 use <code>focal</code>.  If you also need source code , add content <code>dec-src https://packages.zorinos.com/premium bionic main</code> as well.</p>
+</li>
+<li>
+<p>Create new file <code>/etc/apt/apt.conf.d/99zorin-os-premium-user-agent-temp</code> and add content <code>Acquire {  http::User-Agent "Zorin Os Premium" }</code>.</p>
+</li>
+<li>
+<p>Note: Under Zorin 17, You will encounter this issue: <code>The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 5FD7496A07D323BC</code>. The solution is 1) <code>curl -sS https://packages.zorinos.com/zorin_os_key.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/zorin.gpg</code> or 2) <code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys  5FD7496A07D323BC</code> . Reference: https://github.com/PEAKYCOMMAND/Zorin-OS-Pro/blob/main/zorin.sh</p>
+</li>
+<li>
+<p>Optionally, do <code>apt update &amp;&amp; apt install apt-user-agent-zorin-os-premium</code> and then delete file  <code>/etc/apt/apt.conf.d/99zorin-os-premium-user-agent-temp</code> </p>
+</li>
+<li>
+<p>To get more layouts of windows manager , do <code>apt install zorin-apperance-layouts-shell-premium zorin-apperance-layouts-xfce-premium</code></p>
+</li>
+<li>
+<p>you can check what packages are included in Premium via <code>/var/lib/apt/lists/premium</code></p>
+</li>
+</ol>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+              Tags:  #<a href="https://jackyzy823.github.io/tag/zorin.html">zorin</a> #<a href="https://jackyzy823.github.io/tag/bypass.html">bypass</a> #<a href="https://jackyzy823.github.io/tag/crack.html">crack</a> #<a href="https://jackyzy823.github.io/tag/pro.html">pro</a> #<a href="https://jackyzy823.github.io/tag/premium.html">premium</a> #<a href="https://jackyzy823.github.io/tag/ultimate.html">ultimate</a> #<a href="https://jackyzy823.github.io/tag/po-jie.html">破解</a>        </div>
+        <br/>
+        <ul>
+              <li>Prev:
+                  <a href="https://jackyzy823.github.io/tech/thinkpad-linux-image-en.html">
+                      ThinkPad Linux Image Download Link
+                  </a>
+              </li>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/tech/qmailagent-analysis-and-crack-en.html">
+                      QMailAgent Architecture Analysis and Premium Crack
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div>
+        <br/>
+        <h2 id="comments">COMMENTS</h2>
+            <div id="comment-8a09309f-33e5-4151-afee-118983cda002" class="comment">
+              <!-- TODO: lazy load image -->
+              <img class="gravatar" src="https://seccdn.libravatar.org/avatar/a7046ca1415267ff6a92fec47d68093c?d=identicon" alt="">
+              <p>
+                <strong>pop</strong>
+                <br/>
+                <time>Sun, 10 Nov 2024</time>
+                <br/>
+                谢谢大佬的文章，我在17(jimmy)下实测不行了，提示没有公钥
+              </p>  
+              <button class="replyto" onclick="javascript:document.getElementById('comment-replyto').value = '8a09309f-33e5-4151-afee-118983cda002' ;document.getElementById('comment-post').scrollIntoView();">Replyto</button>
+            </div>
+            <div id="comment-0c7e4377-6fc0-4be5-8327-a38fc7ad4069" class="comment">
+              <!-- TODO: lazy load image -->
+              <img class="gravatar" src="https://seccdn.libravatar.org/avatar/4d86a6f146eac3e9fef5e0fffb599bd6?d=identicon" alt="">
+              <p>
+                <strong>jackyzy823</strong>
+                <br/>
+                <time>Fri, 22 Nov 2024</time>
+                <br/>
+                文章已更新。添加APT公钥即可。`sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5FD7496A07D323BC`
+              </p>  
+              <button class="replyto" onclick="javascript:document.getElementById('comment-replyto').value = '0c7e4377-6fc0-4be5-8327-a38fc7ad4069' ;document.getElementById('comment-post').scrollIntoView();">Replyto</button>
+              <button class="related" onclick="javascript:(function(){let a = document.getElementsByClassName('comment');for(let i=0;i<a.length;i++){a[i].classList.remove('highlight');} })()  ; document.getElementById('comment-8a09309f-33e5-4151-afee-118983cda002').classList.add('highlight');document.getElementById('comment-8a09309f-33e5-4151-afee-118983cda002').scrollIntoView();">Related</button>
+            </div>
+      </div>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="zorin-os-pro-upgrade">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>

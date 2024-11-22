@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh_cn">
+  <head>
+        <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=endge, chrome=IE8" />
+    <meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+    <title>Sublime SVN/SFTP 破解 — 君に会いたい ...Sprinter</title>
+    <!--[if lte IE 8]><script type="text/javascript" src="https://jackyzy823.github.io/theme/js/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/skeleton.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="https://jackyzy823.github.io/theme/css/theme.css" />
+    <link rel="stylesheet" media="not print" type="text/css" href="https://jackyzy823.github.io/theme/css/pygments.css" /> 
+    <link rel="shortcut icon" type="image/png" href="https://jackyzy823.github.io/favicon.png" />
+    <!--[if lte IE 8]><link rel="shortcut icon" type="image/x-icon" href="https://jackyzy823.github.io/favicon.ico" /><![endif]-->
+    <link rel="alternate" type="application/atom+xml"
+                           title="君に会いたい ...Sprinter — jackyzy823"
+                           href="https://jackyzy823.github.io/feeds/all.atom.xml" />
+
+    <meta name="author"   content="jackyzy823" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="注： 本文原来发布在CSDN，但是最近发现文章状态变成了审核未通过，原因是版权问题，于是复制到这边。 注2： 本文发布时间较 …"/>
+    
+    <meta property="og:title" content="Sublime SVN/SFTP 破解" />
+    <meta property="og:url" content="https://jackyzy823.github.io/tech/sublime-svn-sftp-license-crack.html" />
+    <link rel="canonical" href="https://jackyzy823.github.io/tech/sublime-svn-sftp-license-crack.html"/>
+  </head>
+  <body>
+    <a name="top"></a>
+    <div id="page">
+      <header id="page-head">
+        <h1>
+          <a href="https://jackyzy823.github.io/index.html">君に会いたい ...Sprinter</a>
+        </h1>
+      </header>
+      <div id="page-body">
+        <article class="post" id="page-main" role="main">
+      <header class="post-header">
+        <h2>
+          <a rel="bookmark"
+             href="https://jackyzy823.github.io/tech/sublime-svn-sftp-license-crack.html"
+             title="Permanent link to «Sublime SVN/SFTP 破解»">
+             Sublime SVN/SFTP 破解
+          </a>
+        </h2>
+        <div class="meta">
+            Date: <time datetime="2014-04-29T00:05:36+08:00" title="2014-04-29T00:05:36+08:00">Tue 29 April 2014</time>              <br />Updated: <time datetime="2023-07-21T00:00:00+08:00" title="2023-07-21T00:00:00+08:00">Fri 21 July 2023</time>
+        </div>
+      </header>
+      <div class="post-content"> 
+        <p>注： 本文原来发布在CSDN，但是最近发现文章状态变成了审核未通过，原因是版权问题，于是复制到这边。</p>
+<p>注2： 本文发布时间较早(<strong>2014年</strong>)，已经失效。在新版本中用"-"来判断新旧Key，有"-"，则为旧key，<strong>并验证如果不在KEY_FILTER（已知的所有旧Key的Bloom Filter）中就是伪造的Key</strong>。新key用椭圆曲线公私钥的方式验证。目前思路有修改bloom_filter.pyc，修改判断逻辑。</p>
+<p>以下为原文：</p>
+<p>注：使用一段时间后出现</p>
+<p>./sublimesvn/commands.py:4230: UnicodeWarning: Unicode unequal comparison failed to convert both arguments to Unicode - interpreting them as being unequal</p>
+<p>这种问题，虽然不会弹出对话框，但是svn界面会显示unregistered，重启sublime后正常，明日早起研究</p>
+<p>注：测试环境 Ubuntu14.10 Sublime Text 2 2221</p>
+<p>window下将<code>sys.path.append('~/.config/sublime-text-2/Packages/SVN')</code>里的路径改成sublime-&gt;perferences-&gt;browser package所在的路径</p>
+<p><code>import sys;sys.path.append('~/.config/sublime-text-2/Packages/SVN');config={'email':"your_email_1",'product_key':'test'};from sublimesvn import commands;commands.SvnCommand.setup_elements(config);print commands.SvnCommand.get_prefix()</code></p>
+<p>email填自己的email，product_key暂时随便填</p>
+<p>由于sublimesvn的pyc都是python2.6环境下生成的，所以必须调出sublime的console (Ctrl+`)，将以上代码复制进去 ，而不能用python，ipython之类的</p>
+<p>当然如果还在用python2.6的话忽略以上一句</p>
+<p>把最后算出来的值作为product_key和email放入svn.sublime-settings即可</p>
+<p>算了一个供试用</p>
+<p>SVN</p>
+<p>email:cracked_by_jackyzy823
+product_key:fb1255-184296-6565ae-ac9efd-2c6c30</p>
+<p>SFTP</p>
+<p>email:cracked_by_jackyzy823</p>
+<p>product_key:a69fef-050040-e39de9-b2720f-64a9fc</p>
+<hr>
+<p>但是我用什么email 算出来都是这个值。。。。
+更正：因为setup_element 在Svncommand类里有elements时不会覆盖之。。重启一下sublime就好了</p>
+<hr>
+<p>在</p>
+<p>SublimeText  -&gt; Preferences -&gt; Package Settings -&gt; SFTP/SVN -&gt; Setting Users</p>
+<p>中增加以下内容
+{</p>
+<p>"email":"your_email",</p>
+<p>"product_key":"calced_product_key"</p>
+<p>}</p>
+<p>完成激活</p>
+<p>sftp</p>
+<p>在sftp里get_prefix 并没有单独成为一个函数，虽然可以通过svn的get_prefix破解但是稍微有些麻烦，等有空把get_prefix函数研究透彻再更新。</p>
+<p>commands.Svncommand.get_prefix 是通过使用decompile++反编译commands.pyc得到的，但是由于可能代码做了混淆，所以这段代码反编译不是十分清晰。</p>
+<hr>
+<p>sftp代替方案
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calc_key_sftp</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
+    <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="n">email</span><span class="p">,</span><span class="s1">&#39;sftp_flags&#39;</span><span class="p">,</span><span class="s1">&#39;ssh_key_file&#39;</span><span class="p">,</span><span class="s1">&#39;psftp&#39;</span><span class="p">];</span>
+    <span class="n">key</span><span class="o">=</span><span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+        <span class="n">key</span><span class="o">=</span><span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">key</span><span class="p">;</span>
+</code></pre></div></p>
+<p>将email输入函数 将输出值代替以下代码的calc_key_sftp("email") 就可以算出sftp的product_key</p>
+<p>注：需安装有sublime svn</p>
+<p><code>import sys;sys.path.append('~/.config/sublime-text-2/Packages/SVN');from sublimesvn import commands;commands.SvnCommand.elements=[0,calc_key_sftp(''email')];print commands.SvnCommand.get_prefix()</code></p>
+<p>与此同时 </p>
+<p>svn也有同样的不讨好方法</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">calc_key_svn</span><span class="p">(</span><span class="n">email</span><span class="p">):</span>
+    <span class="n">elements</span><span class="o">=</span><span class="p">[</span><span class="n">email</span><span class="p">,</span><span class="s1">&#39;status&#39;</span><span class="p">,</span><span class="s1">&#39;checkout&#39;</span><span class="p">,</span><span class="s1">&#39;diff&#39;</span><span class="p">];</span>
+    <span class="n">key</span><span class="o">=</span><span class="n">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+        <span class="n">key</span><span class="o">=</span><span class="n">hmac</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span><span class="n">key</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">key</span><span class="p">;</span>
+</code></pre></div>
+<p>注释同sftp</p>
+<p><code>import sys;sys.path.append('~/.config/sublime-text-2/Packages/SVN');from sublimesvn import commands;commands.SvnCommand.elements=[0,calc_key_svn(''email')];print commands.SvnCommand.get_prefix()</code></p>
+<hr>
+<p>更新：</p>
+<p>将cal函数 lambda 化</p>
+<p>svn</p>
+<p><code>import sys,hmac;sys.path.append('~/.config/sublime-text-2/Packages/SVN');from sublimesvn import commands;calc_key_svn=lambda x: hmac.new("diff",hmac.new("checkout",hmac.new("status",hmac.new(x,x).digest()).digest()).digest()).digest();commands.SvnCommand.elements=[0,calc_key_svn("your_email")];print commands.SvnCommand.get_prefix()</code></p>
+<p>sftp(需在svn存在情况下)</p>
+<p><code>import sys,hmac;sys.path.append('~/.config/sublime-text-2/Packages/SVN');from sublimesvn import commands;calc_key_sftp=lambda x: hmac.new("psftp",hmac.new("ssh_key_file",hmac.new("sftp_flags",hmac.new(x,x).digest()).digest()).digest()).digest();commands.SvnCommand.elements=[0,calc_key_sftp("your_email")];print commands.SvnCommand.get_prefix()</code></p>
+<p>​</p>
+      </div>
+      <footer class="post-footer">
+        <div class="meta">
+            Posted in «<a href="https://jackyzy823.github.io/category/tech.html">tech</a>» 
+            by <a href="https://jackyzy823.github.io/author/jackyzy823.html">jackyzy823</a><br />
+        </div>
+        <br/>
+        <ul>
+              <li>Next:
+                  <a href="https://jackyzy823.github.io/tech/a-tiny-penetration-test.html">
+                      一次微不足道的渗透测试
+                  </a>
+              </li>
+         </ul>
+      </footer>
+      <div id="comment-post">
+        <h3>Leave a comment</h3>
+        <p>Note : Your comment will not be displayed until a Github PullRequest have been merged.</p>
+        <noscript><p>Note2: Require Javascript to submit a comment.</p></noscript>
+        <script type="text/javascript" src="https://jackyzy823.github.io/theme/js/spark-md5.min.js"></script>
+        <script type="text/javascript">
+            var comment = function(button){
+              if ( !window.event.target.parentElement.reportValidity() ){
+                return;
+              }
+
+              let keywords = ["slug" , "name" , "email" , "url" , "comment" , "replyto"];
+
+              let payload = {};
+              keywords.forEach(function(item, index) {
+                  payload[item] = document.getElementById("comment-"+item).value;
+              });
+              payload["email"] = SparkMD5.hash(payload["email"]);
+              fetch("https://publicactiontrigger.azurewebsites.net/api/dispatches/jackyzy823/jackyzy823.github.io", {
+                method: 'POST',
+                mode: 'cors',
+                credentials: 'omit',
+                cache: 'no-cache',
+                redirect: 'error',
+                referrerPolicy: 'no-referrer',
+                body: JSON.stringify({ event_type: 'comment', client_payload: { data: payload } })
+              }).then(function(resp){
+                if(resp.ok){
+                  document.getElementById("comment-result").textContent = "Success."
+                } else if (resp.status == 422){
+                  resp.text().then(
+                    function(msg){
+                      document.getElementById("comment-result").textContent = "Error: "+msg;
+                    })
+                }
+              });
+            }
+
+        </script>
+        <form>
+            <input id="comment-slug" name="options[slug]" type="hidden" value="sublime-svn-sftp-license-crack">
+            <p><label>Name:</label> <input id="comment-name" name="fields[name]" type="text" placeholder="(Required)" required="required"></p>
+            <p><label>E-mail:</label> <input id="comment-email" name="fields[email]" type="email" placeholder="(Required to calcuate MD5 for displaying avatar)" required="required"></p>
+            <p><label>Website:</label> <input id="comment-url" name="fields[url]" type="text" placeholder="(Optional)"></p>
+            <p><label>Comment:</label> <textarea id="comment-comment" name="fields[comment]" rows=5 required="required"></textarea></p>
+            <p><label>Reply To(<a alt="Clean replyto" onclick="document.getElementById('comment-replyto').value = null">Clear</a>):</label>
+              <input id="comment-replyto" name="fields[replyto]" type="text" placeholder="(Empty if directly replying to this article)" readonly></p>
+            <input type="button" value="Submit" onclick="comment()" ></input>
+            <p id="comment-result"></p>
+        </form>
+      </div>
+
+      </article> 
+        <aside id="page-side">
+          <nav>
+            <h3>Pages</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/">Home</a></li>
+              <li><a href="https://jackyzy823.github.io/categories.html">Categories</a></li>
+              <li><a href="https://jackyzy823.github.io/archives.html">Archives</a></li>
+              <li><a href="https://jackyzy823.github.io/tags.html">Tags</a></li>
+              <li><a href="https://jackyzy823.github.io/about.html">About</a></li>
+              <li><a href="https://jackyzy823.github.io/projects.html">Projects</a></li>
+              <li><a href="https://jackyzy823.github.io/random-thoughts.html">Random Thoughts</a></li>
+              <li><a href="https://jackyzy823.github.io/self-hostings.html">Self Hostings</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/category/monthly.html">monthly</a></li>
+              <li><a href="https://jackyzy823.github.io/category/rambling.html">rambling</a></li>
+              <li class="active"><a href="https://jackyzy823.github.io/category/tech.html">tech</a></li>
+            </ul>
+          </nav>
+
+          <nav>
+            <h3>Links</h3>
+            <ul>
+              <li><a href="https://jackyzy823.github.io/feeds/all.atom.xml">Feed(Atom)</a></li>
+              <li><a href="https://github.com/jackyzy823">me@github</a></li>
+              <li><a href="https://twitter.com/jackyzy823">me@twitter[NSFW]</a></li>
+            </ul>
+          </nav>
+</aside>       </div>        <footer id="page-foot">
+        <p> Powered by <a href="http://pelican.readthedocs.org">Pelican</a><br>
+          Built with <a href="https://docs.github.com/en/actions">Github Actions</a><br/>
+          Theme <strong>Hikaru</strong> based on <a href="https://github.com/getpelican/pelican-themes/tree/master/dev-random2">dev-random2</a> and <strong>Akai</strong> by <a href="https://www.soimort.org">Soimort</a></br/>
+          Comments via <a href="https://github.com/benkaiser">benkaiser</a>'s <a href="https://github.com/apps/public-action-trigger">Public Action Trigger</a> and my <a href="https://github.com/jackyzy823/jackyzy823.github.io/tree/source/.github/workflows">workflow</a>
+          </p>
+          <a href="#top">Back To Top</a>
+      </footer>
+    </div>   </body>
+</html>
