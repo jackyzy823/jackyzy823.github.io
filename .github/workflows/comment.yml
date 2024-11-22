@@ -57,7 +57,7 @@ jobs:
           delete-branch: true
           title: "${{ steps.preprocess.outputs.name }} comments on ${{ steps.preprocess.outputs.slug }}"
           body: |
-            ![Logo](https://seccdn.libravatar.org/avatar/{{comment.email}}?d=identicon) **${{ steps.preprocess.outputs.name }}** comments on **${{ steps.preprocess.outputs.slug }}**:
+            ![Logo](https://seccdn.libravatar.org/avatar/${{ steps.preprocess.outputs.email }}?d=identicon) **${{ steps.preprocess.outputs.name }}** comments on **${{ steps.preprocess.outputs.slug }}**:
 
             **${{ steps.preprocess.outputs.comment }}**
           draft: false
